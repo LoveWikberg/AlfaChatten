@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AlfaChatten.Hubs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using AlfaChatten.Data;
 
 namespace AlfaChatten
 {
@@ -24,8 +27,19 @@ namespace AlfaChatten
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddMvc();
+
+            services.AddTransient<DataManager>();
+
             services.AddSignalR();
+            services.AddAuthentication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +49,9 @@ namespace AlfaChatten
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvc();
             app.UseSignalR(routes =>
             {
