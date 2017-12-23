@@ -12,6 +12,7 @@ using AlfaChatten.Hubs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AlfaChatten.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace AlfaChatten
 {
@@ -34,12 +35,13 @@ namespace AlfaChatten
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
-
             services.AddTransient<DataManager>();
 
-            services.AddSignalR();
             services.AddAuthentication();
+
+            services.AddMvc();
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,12 +53,16 @@ namespace AlfaChatten
             }
 
             app.UseStaticFiles();
+
+            // ÄNDRA EJ ORDNINGEN PÅ DESSA!
             app.UseAuthentication();
-            app.UseMvc();
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("chat");
             });
+
+            app.UseMvc();
         }
     }
 }

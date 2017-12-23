@@ -10,6 +10,10 @@
         signin({ userName: name});
     });
 
+    $('#testauth').click(function () {
+        testAuth();
+    })
+
 })
 
 function createUser() {
@@ -32,6 +36,21 @@ function signin(data) {
         url: "api/user/signIn",
         method: "GET",
         data: data
+    })
+        .done(function (result) {
+            alert("removed");
+            console.log(result);
+        })
+        .fail(function (xhe, status, error) {
+            alert("fail");
+            console.log(xhe, status, error);
+        })
+}
+
+function testAuth() {
+    $.ajax({
+        url: "api/user/testauth",
+        method: "GET",
     })
         .done(function (result) {
             alert("removed");

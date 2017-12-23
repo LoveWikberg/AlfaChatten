@@ -34,6 +34,12 @@ namespace AlfaChatten.Controllers
             return Ok("tjena signin");
         }
 
+        [Authorize, HttpGet, Route("testauth")]
+        public IActionResult TestAuth()
+        {
+            return Ok("authed");
+        }
+
         [Authorize, HttpDelete, Route("user")]
         async public Task<IActionResult> RemoveUser()
         {
