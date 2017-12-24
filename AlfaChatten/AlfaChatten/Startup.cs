@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AlfaChatten.Hubs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using AlfaChatten.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace AlfaChatten
 {
@@ -24,7 +28,19 @@ namespace AlfaChatten
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddTransient<DataManager>();
+
+            services.AddAuthentication();
+
             services.AddMvc();
+
             services.AddSignalR();
         }
 
@@ -35,12 +51,18 @@ namespace AlfaChatten
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseStaticFiles();
-            app.UseMvc();
+
+            // ÄNDRA EJ ORDNINGEN PÅ DESSA!
+            app.UseAuthentication();
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("chat");
             });
+
+            app.UseMvc();
         }
     }
 }

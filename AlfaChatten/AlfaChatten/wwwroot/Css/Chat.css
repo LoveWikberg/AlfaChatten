@@ -2,3 +2,9 @@
     background-color: red;
     border: solid black 1px;
 }
+
+.chatBubble {
+    word-wrap: break-word;
+    background-color:yellow;
+    width:70px;
+}
