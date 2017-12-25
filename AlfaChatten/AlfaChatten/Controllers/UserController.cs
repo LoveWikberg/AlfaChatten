@@ -27,17 +27,18 @@ namespace AlfaChatten.Controllers
             this.dataManager = dataManager;
         }
 
-        [HttpGet, Route("signIn")]
+        [HttpPost, Route("signIn")]
         async public Task<IActionResult> SignIn(string userName)
         {
-            await dataManager.SignIn(userName);
-            return Ok("tjena signin");
-        }
-
-        [Authorize, HttpGet, Route("testauth")]
-        public IActionResult TestAuth()
-        {
-            return Ok("authed");
+            try
+            {
+                await dataManager.SignIn(userName);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [Authorize, HttpDelete, Route("user")]
@@ -53,22 +54,25 @@ namespace AlfaChatten.Controllers
             return Ok();
         }
 
-        [HttpGet, Route("create")]
-        async public Task<IActionResult> CreateUser()
+        [HttpPost, Route("create")]
+        async public Task<IActionResult> CreateUser(string userName)
         {
-            var user = await userManager.FindByNameAsync("kalle");
-            //await signInManager.SignInAsync(user)
-            //var user = new ApplicationUser
-            //{
-            //    UserName = "kalle",
-            //    Email = "kalle@gmail.com",
-            //    ChatName = "kalle",
-            //    Quote = "Grym som fan"
-            //};
-            //await userManager.CreateAsync(user);
-            //await userManager.AddPasswordAsync(user, "hejsan");
-            //await signInManager.SignInAsync(user, true);
-            return Ok(user);
+            try
+            {
+                await dataManager.CreateUser(userName);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize, HttpPost, Route("signOut")]
+        async public Task<IActionResult> SignOut()
+        {
+            await signInManager.SignOutAsync();
+            return Ok();
         }
 
         [HttpGet, Route("signintest")]
@@ -79,5 +83,13 @@ namespace AlfaChatten.Controllers
             return Ok(user);
         }
 
+        [HttpGet, Route("checkAuth")]
+        public IActionResult TestAuth()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                return Ok(HttpContext.User.Identity.Name);
+            else
+                return Unauthorized();
+        }
     }
 }
