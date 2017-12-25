@@ -14,7 +14,7 @@ namespace AlfaChatten.Data
         private readonly ApplicationDbContext context;
 
         public DataManager(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager
-            ,RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+            , RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -23,6 +23,22 @@ namespace AlfaChatten.Data
 
             context.Database.EnsureCreated();
             roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
+        }
+
+        async public Task CreateUser(string userName)
+        {
+            if (await userManager.FindByNameAsync(userName) == null)
+            {
+                var newUser = new ApplicationUser
+                {
+                    UserName = userName,
+                    ChatName = userName
+                };
+                await userManager.CreateAsync(newUser);
+                await signInManager.SignInAsync(newUser, false);
+            }
+            else
+                throw new Exception("User name is taken");
         }
 
         async public Task RemoveUser(string userName)
@@ -34,7 +50,10 @@ namespace AlfaChatten.Data
         async public Task SignIn(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
-            await signInManager.SignInAsync(user, false);
+            if (user != null)
+                await signInManager.SignInAsync(user, false);
+            else
+                throw new Exception("Invalid user name");
         }
 
         async public Task EditUser(ApplicationUser user)

@@ -1,4 +1,8 @@
 ﻿.userPanelContainer {
-    background-color: blue;
+    background-color: #efefef;
     border: solid black 1px;
+}
+
+.faded{
+    opacity:0.5;
 }
