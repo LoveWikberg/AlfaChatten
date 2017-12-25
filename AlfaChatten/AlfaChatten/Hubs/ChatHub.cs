@@ -9,7 +9,7 @@ namespace AlfaChatten.Hubs
 {
     public class ChatHub : Hub
     {
-        public void Send(string name, string message)
+        public void Send(string message)
         {
             // FUNGERAR IAF I FIREFOX DEV MODE
 

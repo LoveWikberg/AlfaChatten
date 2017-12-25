@@ -12,12 +12,12 @@
     <title></title>
 </head>
 <body>
-    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded" id="navbar">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">Alfachatten</a>
-
+        <span id="hideNavbar" class="navbar-text fa fa-arrow-up"></span>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"></ul>
             <div id="logedinInOrOut" class="form-inline my-2 my-lg-0 faded form-group">
@@ -34,9 +34,15 @@
 
         <div class="row">
             <div class="col-md-5 chatContainer">
-                <input type="text" id="message" />
+                <div class="chatContent"></div>
+                <form class="chatInput">
+                    <textarea id="messageInput" placeholder="Write something..."></textarea>
+                    <!--<input type="text" placeholder="Write something..." />-->
+                    <input type="submit" value="send" />
+                </form>
+                <!--<input type="text" id="message" />
                 <input type="button" id="sendMessage" value="Send" />
-                <ul id="discussion"></ul>
+                <ul id="discussion"></ul>-->
             </div>
             <div class="col-md-7 userPanelContainer">
 
@@ -56,6 +62,12 @@
                     <div class="tab-pane" id="users" role="tabpanel">users users users users </div>
                 </div>
             </div>
+        </div>
+        <div id="showNav">
+            <i class="fa fa-arrow-down"></i>
+        </div>
+        <div id="toogleChatOrUserPanel">
+            <i class="fa fa-address-card" aria-hidden="true"></i>
         </div>
     </div>
     <script src="../JavaScript/userpanel.js"></script>

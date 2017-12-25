@@ -1,6 +1,8 @@
 ﻿$(function () {
     checkIfClientIsAuthorized();
 
+    fixNavbar();
+
     $(document).on("click", "#signIn", function () {
         var name = $('#userName').val();
         signIn({ userName: name });
@@ -25,7 +27,61 @@
         $('#userName').removeClass('form-control-danger');
     });
 
+    $window.resize(function () {
+        fixNavbar();
+    });
+
+    $('#hideNavbar').click(function () {
+        $('#navbar').fadeOut();
+    });
+
+    $('#showNav').click(function () {
+        $('#navbar').fadeIn();
+    });
+
+    $('#toogleChatOrUserPanel').click(function () {
+        var icon = $(this).children();
+        if (icon.hasClass('fa-address-card')) {
+            icon.removeClass('fa-address-card');
+            icon.addClass('fa-comments');
+            $('html, body').animate({
+                scrollTop: $(".userPanelContainer").offset().top
+            }, 1000);
+        }
+        else {
+            icon.removeClass('fa-comments');
+            icon.addClass('fa-address-card');
+            $('html, body').animate({
+                scrollTop: $(".chatContainer").offset().top
+            }, 1000);
+        }
+    });
+
+    //var lastScrollTop = 0;
+    //$window.scroll(function (event) {
+    //    var st = $(this).scrollTop();
+    //    if (st > lastScrollTop) {
+    //        // downscroll code
+    //        $('#navbar').fadeOut()
+    //    } else {
+    //        $('#navbar').fadeIn()
+    //        // upscroll code
+    //    }
+    //    lastScrollTop = st;
+    //});
+
 });
+
+var $window = $(window);
+function fixNavbar() {
+    if ($window.width() <= 991 && !$('#navbar').hasClass('fixed-top')) {
+        $('#navbar').addClass('fixed-top');
+    }
+    else if ($window.width() > 991 && $('#navbar').hasClass('fixed-top')) {
+        $('#navbar').removeClass('fixed-top');
+        $('#navbar').show();
+    }
+}
 
 function createUser(data) {
     $.ajax({
@@ -95,7 +151,7 @@ function checkIfClientIsAuthorized() {
 function editUserInterface(isLogedIn, user) {
     var html = "";
     if (isLogedIn) {
-        html += '<a>Loged in as: ' + user + '</a>';
+        html += '<span class="navbar-text">Logged in as: ' + user + '</span>';
         html += '&nbsp;';
         html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
         $('#profileTab').removeClass("disabled");
