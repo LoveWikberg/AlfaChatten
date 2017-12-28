@@ -1,6 +1,7 @@
 ﻿.userPanelContainer {
     background-color: #efefef;
     border: solid black 1px;
+    height:100vh;
 }
 
 .faded{

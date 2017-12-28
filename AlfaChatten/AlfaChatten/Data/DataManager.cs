@@ -32,7 +32,8 @@ namespace AlfaChatten.Data
                 var newUser = new ApplicationUser
                 {
                     UserName = userName,
-                    ChatName = userName
+                    ChatName = userName,
+                    Email = $"{userName}@gmail.com"
                 };
                 await userManager.CreateAsync(newUser);
                 await signInManager.SignInAsync(newUser, false);
@@ -60,5 +61,18 @@ namespace AlfaChatten.Data
         {
             var userToEdit = await userManager.FindByIdAsync(user.Id);
         }
+
+        async public Task<ApplicationUser> GetUserInfo(string userName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            return user;
+        }
+
+        public ApplicationUser[] SearchUsers(string searchInput)
+        {
+            var searchResult = userManager.Users.Where(u => u.UserName.Contains(searchInput)).ToArray();
+            return searchResult;
+        }
+
     }
 }

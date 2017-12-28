@@ -91,5 +91,20 @@ namespace AlfaChatten.Controllers
             else
                 return Unauthorized();
         }
+
+        [Authorize, HttpGet, Route("userInfo")]
+        async public Task<IActionResult> GetUserInfo()
+        {
+            var user = await dataManager.GetUserInfo(HttpContext.User.Identity.Name);
+            return Ok(user);
+        }
+
+        [HttpGet, Route("searchUser")]
+        public IActionResult SearchUser(string searchInput)
+        {
+            var users = dataManager.SearchUsers(searchInput);
+            return Ok(users);
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿$(function () {
     checkIfClientIsAuthorized();
 
+    fixNavbar();
+
     $(document).on("click", "#signIn", function () {
         var name = $('#userName').val();
         signIn({ userName: name });
@@ -25,7 +27,65 @@
         $('#userName').removeClass('form-control-danger');
     });
 
+    $window.resize(function () {
+        fixNavbar();
+    });
+
+    $('#hideNavbar').click(function () {
+        $('#navbar').fadeOut();
+    });
+
+    $('#showNav').click(function () {
+        $('#navbar').fadeIn();
+    });
+
+    $('#toogleChatOrUserPanel').click(function () {
+        var icon = $(this).children();
+        if (icon.hasClass('fa-address-card')) {
+            icon.removeClass('fa-address-card');
+            icon.addClass('fa-comments');
+            $('html, body').animate({
+                scrollTop: $(".userPanelContainer").offset().top
+            }, 1000);
+        }
+        else {
+            icon.removeClass('fa-comments');
+            icon.addClass('fa-address-card');
+            $('html, body').animate({
+                scrollTop: $(".chatContainer").offset().top
+            }, 1000);
+        }
+    });
+
+    $('#userSearch').keyup(function () {
+        searchUser({ searchInput: $(this).val() });
+    });
+
+    //var lastScrollTop = 0;
+    //$window.scroll(function (event) {
+    //    var st = $(this).scrollTop();
+    //    if (st > lastScrollTop) {
+    //        // downscroll code
+    //        $('#navbar').fadeOut()
+    //    } else {
+    //        $('#navbar').fadeIn()
+    //        // upscroll code
+    //    }
+    //    lastScrollTop = st;
+    //});
+
 });
+
+var $window = $(window);
+function fixNavbar() {
+    if ($window.width() <= 991 && !$('#navbar').hasClass('fixed-top')) {
+        $('#navbar').addClass('fixed-top');
+    }
+    else if ($window.width() > 991 && $('#navbar').hasClass('fixed-top')) {
+        $('#navbar').removeClass('fixed-top');
+        $('#navbar').show();
+    }
+}
 
 function createUser(data) {
     $.ajax({
@@ -34,8 +94,10 @@ function createUser(data) {
         data: data
     })
         .done(function (userName) {
-            editUserInterface(true, data.userName);
-            console.log(userName);
+            location.reload();
+            //editUserInterface(true, data.userName);
+            //getUserInfo();
+            //console.log(userName);
         })
         .fail(function (xhr, status, error) {
             validateSignIn();
@@ -51,8 +113,10 @@ function signIn(data) {
         data: data
     })
         .done(function (userName) {
-            editUserInterface(true, data.userName);
-            console.log(userName);
+            location.reload();
+            //editUserInterface(true, data.userName);
+            //getUserInfo();
+            //console.log(userName);
         })
         .fail(function (xhe, status, error) {
             validateSignIn();
@@ -84,7 +148,8 @@ function checkIfClientIsAuthorized() {
         .done(function (userName) {
             $('#logedinInOrOut').removeClass("faded");
             editUserInterface(true, userName);
-            console.log(result);
+            getUserInfo();
+            console.log(userName);
         })
         .fail(function (xhe, status, error) {
             $('#logedinInOrOut').removeClass("faded");
@@ -95,7 +160,7 @@ function checkIfClientIsAuthorized() {
 function editUserInterface(isLogedIn, user) {
     var html = "";
     if (isLogedIn) {
-        html += '<a>Loged in as: ' + user + '</a>';
+        html += '<span class="navbar-text">Logged in as: ' + user + '</span>';
         html += '&nbsp;';
         html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
         $('#profileTab').removeClass("disabled");
@@ -120,4 +185,53 @@ function editUserInterface(isLogedIn, user) {
 function validateSignIn() {
     $('#logedinInOrOut').addClass('has-danger');
     $('#userName').addClass('form-control-danger');
+}
+
+
+
+// TODO
+// Make some data editable
+function getUserInfo(data) {
+    $.ajax({
+        url: "api/user/userInfo",
+        method: "GET",
+        data: data
+    })
+        .done(function (user) {
+            populateProfileForm(user);
+            console.log(user);
+        })
+        .fail(function (xhr, status, error) {
+            console.log(xhr, status, error);
+        });
+}
+
+function populateProfileForm(user) {
+    $('#formUserName').val(user.userName);
+    $('#formEmail').val(user.email);
+    $('#formChatName').val(user.chatName);
+}
+
+function searchUser(data) {
+    $.ajax({
+        url: "api/user/searchUser",
+        method: "GET",
+        data: data
+    })
+        .done(function (users) {
+            var html = "";
+            users.forEach(function (user) {
+                html += getHtmlForSearchResult(user);
+            });
+            $('#userSearchResult').html(html);
+            console.log(users);
+        })
+        .fail(function (xhr, status, error) {
+            console.log(xhr, status, error);
+        });
+}
+
+function getHtmlForSearchResult(user) {
+    var html = '<li class="list-group-item">' + user.userName + '</li>';
+    return html;
 }

@@ -1,10 +1,79 @@
 ﻿.chatContainer {
-    background-color: red;
     border: solid black 1px;
+    height: 100vh;
 }
 
 .chatBubble {
     word-wrap: break-word;
-    background-color:yellow;
-    width:70px;
+    max-width: 45%;
+    margin: 2%;
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.gray {
+    background-color: #d6c9c9;
+    color: black;
+}
+
+.blue {
+    background-color: #1410fd;
+    color: white;
+}
+
+.chatContent {
+    width: 100%;
+    height: 75%;
+    border: solid black 2px;
+    overflow: auto;
+}
+
+.chatInput {
+    width: 100%;
+    height: 25%;
+    border: solid black 2px;
+}
+
+#showNav {
+    position: fixed;
+    right: 5%;
+    top: 5%;
+    background: radial-gradient( 5px -9px, circle, white 8%, red 26px );
+    background-color: #117e1a;
+    border: 2px solid white;
+    border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
+    box-shadow: 1px 1px 1px black;
+    color: white;
+    font: bold 15px/13px Helvetica, Verdana, Tahoma;
+    height: 30px;
+    min-width: 30px;
+    padding: 4px 3px 0 3px;
+    text-align: center;
+}
+
+#toogleChatOrUserPanel {
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+    background: radial-gradient( 5px -9px, circle, white 8%, red 26px );
+    background-color: #bb6602;
+    border: 2px solid white;
+    border-radius: 12px; /* one half of ( (border * 2) + height + padding ) */
+    box-shadow: 1px 1px 1px black;
+    color: white;
+    font: bold 15px/13px Helvetica, Verdana, Tahoma;
+    height: 30px;
+    min-width: 30px;
+    padding: 4px 3px 0 3px;
+    text-align: center;
+}
+
+@media screen and (min-width: 769px) {
+    #hideNavbar, #showNav, #toogleChatOrUserPanel {
+        visibility: hidden;
+    }
+}
+
+#navbar {
+    z-index: 1;
 }
