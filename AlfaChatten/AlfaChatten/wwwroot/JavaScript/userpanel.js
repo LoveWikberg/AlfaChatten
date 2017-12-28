@@ -57,6 +57,10 @@
         }
     });
 
+    $('#userSearch').keyup(function () {
+        searchUser({ searchInput: $(this).val() });
+    });
+
     //var lastScrollTop = 0;
     //$window.scroll(function (event) {
     //    var st = $(this).scrollTop();
@@ -90,8 +94,10 @@ function createUser(data) {
         data: data
     })
         .done(function (userName) {
-            editUserInterface(true, data.userName);
-            console.log(userName);
+            location.reload();
+            //editUserInterface(true, data.userName);
+            //getUserInfo();
+            //console.log(userName);
         })
         .fail(function (xhr, status, error) {
             validateSignIn();
@@ -107,8 +113,10 @@ function signIn(data) {
         data: data
     })
         .done(function (userName) {
-            editUserInterface(true, data.userName);
-            console.log(userName);
+            location.reload();
+            //editUserInterface(true, data.userName);
+            //getUserInfo();
+            //console.log(userName);
         })
         .fail(function (xhe, status, error) {
             validateSignIn();
@@ -140,7 +148,8 @@ function checkIfClientIsAuthorized() {
         .done(function (userName) {
             $('#logedinInOrOut').removeClass("faded");
             editUserInterface(true, userName);
-            console.log(result);
+            getUserInfo();
+            console.log(userName);
         })
         .fail(function (xhe, status, error) {
             $('#logedinInOrOut').removeClass("faded");
@@ -176,4 +185,53 @@ function editUserInterface(isLogedIn, user) {
 function validateSignIn() {
     $('#logedinInOrOut').addClass('has-danger');
     $('#userName').addClass('form-control-danger');
+}
+
+
+
+// TODO
+// Make some data editable
+function getUserInfo(data) {
+    $.ajax({
+        url: "api/user/userInfo",
+        method: "GET",
+        data: data
+    })
+        .done(function (user) {
+            populateProfileForm(user);
+            console.log(user);
+        })
+        .fail(function (xhr, status, error) {
+            console.log(xhr, status, error);
+        });
+}
+
+function populateProfileForm(user) {
+    $('#formUserName').val(user.userName);
+    $('#formEmail').val(user.email);
+    $('#formChatName').val(user.chatName);
+}
+
+function searchUser(data) {
+    $.ajax({
+        url: "api/user/searchUser",
+        method: "GET",
+        data: data
+    })
+        .done(function (users) {
+            var html = "";
+            users.forEach(function (user) {
+                html += getHtmlForSearchResult(user);
+            });
+            $('#userSearchResult').html(html);
+            console.log(users);
+        })
+        .fail(function (xhr, status, error) {
+            console.log(xhr, status, error);
+        });
+}
+
+function getHtmlForSearchResult(user) {
+    var html = '<li class="list-group-item">' + user.userName + '</li>';
+    return html;
 }
