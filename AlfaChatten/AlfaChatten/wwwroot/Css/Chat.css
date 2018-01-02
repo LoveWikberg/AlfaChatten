@@ -68,11 +68,19 @@
     text-align: center;
 }
 
+
 @media screen and (min-width: 769px) {
-    #hideNavbar, #showNav, #toogleChatOrUserPanel {
+    #hideNavbar, #showNav, #toogleChatOrUserPanel, .sidenav {
         visibility: hidden;
     }
 }
+
+/*This is we want a sidenavbar*/
+/*@media screen and (max-width: 770px) {
+    nav {
+        visibility: hidden;
+    }
+}*/
 
 #navbar {
     z-index: 1;
