@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../Css/Chat.css" rel="stylesheet" />
+    <link href="Css/SideNav.css" rel="stylesheet" />
     <link href="../Css/userPanel.css" rel="stylesheet" />
     <link href="../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -32,14 +33,29 @@
             </div>
         </nav>
 
+        <!--This is for side off-canvas navbar-->
+        <!--<div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div id="logedinInOrOut" class="faded form-group">
+                <fieldset>
+                    <input class="form-control " type="text" placeholder="User name" id="userName">
+                    <button class="btn btn-success " id="signIn">Sign in</button>
+                    &nbsp;
+                    <button class="btn btn-primary " id="createAccount">Create account</button>
+                </fieldset>
+            </div>
+        </div>-->
+
         <div class="row justify-content-md-center">
             <div class="col-md-6 chatContainer">
                 <div class="chatContent">
 
                 </div>
                 <form id="chatForm" class="chatInput">
-                    <textarea id="messageInput" placeholder="Write something..."></textarea>
-                    <input type="submit" value="send" />
+                    <fieldset id="chatFieldSet" disabled>
+                        <input type="text" id="messageInput" placeholder="Sign in to chat" />
+                        <input type="submit" value="send" />
+                    </fieldset>
                 </form>
                 <!--<input type="text" id="message" />
                 <input type="button" id="sendMessage" value="Send" />
@@ -73,6 +89,10 @@
                                 <label for="formChatName">Chat name</label>
                                 <input id="formChatName" name="chatName" class="form-control" />
                             </div>
+                            <div class="form-group">
+                                <label for="formQuote">Quote</label>
+                                <input id="formQuote" name="Quote" class="form-control" />
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
@@ -82,14 +102,13 @@
                             <span class="input-group-addon fa fa-search"></span>
                             <input type="text" class="form-control" placeholder="Search user" id="userSearch">
                         </div>
-                        <ul class="list-group" id="userSearchResult">
-                        </ul>
+                        <ul class="list-group" id="userSearchResult"></ul>
                     </div>
                 </div>
             </div>
         </div>
         <div id="showNav" class="rounded-circle">
-            <i class="fa fa-arrow-down"></i>
+            <i class="fa fa-bars"></i>
         </div>
         <div id="toogleChatOrUserPanel" class="rounded-circle">
             <i class="fa fa-address-card" aria-hidden="true"></i>

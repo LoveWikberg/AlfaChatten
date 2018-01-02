@@ -59,7 +59,10 @@ namespace AlfaChatten.Data
 
         async public Task EditUser(ApplicationUser user)
         {
-            var userToEdit = await userManager.FindByIdAsync(user.Id);
+            var userToEdit = await userManager.FindByNameAsync(user.UserName);
+            userToEdit.ChatName = user.ChatName;
+            userToEdit.Quote = user.Quote;
+            await userManager.UpdateAsync(userToEdit);
         }
 
         async public Task<ApplicationUser> GetUserInfo(string userName)

@@ -3,13 +3,20 @@
 
     fixNavbar();
 
+    // Use this for auto correct in chat.
+    $('#NonExistingMadeForLater').click(function () {
+        var msg = $(this).val();
+        var test = $(this)[0].selectionStart;
+        var word = getWordAt(msg, test);
+        alert(word);
+    });
+
     $(document).on("click", "#signIn", function () {
         var name = $('#userName').val();
         signIn({ userName: name });
     });
 
     $(document).on("click", "#createAccount", function () {
-        alert("create");
         var name = $('#userName').val();
         createUser({ userName: name });
     });
@@ -36,6 +43,7 @@
     });
 
     $('#showNav').click(function () {
+        //openNav();
         $('#navbar').fadeIn();
     });
 
@@ -75,6 +83,27 @@
     //});
 
 });
+
+function getWordAt(str, pos) {
+
+    // Perform type conversions.
+    str = String(str);
+    pos = Number(pos);
+    //pos = Number(pos) >>> 0;
+
+    // Search for the word's beginning and end.
+    var left = str.slice(0, pos + 1).search(/\S+$/),
+        right = str.slice(pos).search(/\s/);
+
+    // The last word in the string is a special case.
+    if (right < 0) {
+        return str.slice(left);
+    }
+
+    // Return the word, using the located bounds to extract it from the string.
+    return str.slice(left, right + pos);
+
+}
 
 var $window = $(window);
 function fixNavbar() {
@@ -120,7 +149,6 @@ function signIn(data) {
         })
         .fail(function (xhe, status, error) {
             validateSignIn();
-            alert("fail");
             console.log(xhe, status, error);
         });
 }
@@ -131,7 +159,6 @@ function signOut() {
         method: "POST"
     })
         .done(function () {
-            alert("signed out");
             editUserInterface(false, " ");
         })
         .fail(function (xhe, status, error) {
@@ -165,6 +192,8 @@ function editUserInterface(isLogedIn, user) {
         html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
         $('#profileTab').removeClass("disabled");
         $('#profile').removeAttr("hidden");
+        $('#messageInput').attr('placeholder', 'Write something...')
+        $('#chatFieldSet').removeAttr("disabled");
     }
     else {
         html += '<input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">';
@@ -177,6 +206,8 @@ function editUserInterface(isLogedIn, user) {
             $('#profile').attr("hidden", true);
         }
         $('#profileTab').addClass("disabled");
+        $('#messageInput').attr('placeholder', 'Sign in to chat')
+        $('#chatFieldSet').attr("disabled", true);
     }
     $('#logedinInOrOut').html(html);
 
@@ -210,6 +241,7 @@ function populateProfileForm(user) {
     $('#formUserName').val(user.userName);
     $('#formEmail').val(user.email);
     $('#formChatName').val(user.chatName);
+    $('#formQuote').val(user.quote);
 }
 
 function searchUser(data) {
@@ -234,4 +266,16 @@ function searchUser(data) {
 function getHtmlForSearchResult(user) {
     var html = '<li class="list-group-item">' + user.userName + '</li>';
     return html;
+}
+
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginRight = "250px";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginRight = "0";
 }
