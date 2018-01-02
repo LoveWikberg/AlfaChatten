@@ -22,7 +22,7 @@ namespace AlfaChatten.Data
             this.context = context;
 
             context.Database.EnsureCreated();
-            roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
+            //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
 
         async public Task CreateUser(string userName)
@@ -75,6 +75,18 @@ namespace AlfaChatten.Data
         {
             var searchResult = userManager.Users.Where(u => u.UserName.Contains(searchInput)).ToArray();
             return searchResult;
+        }
+
+        async public void SaveMessageToDb(string userName, string message)
+        {
+            Chat chat = new Chat
+            {
+                User = userName,
+                Message = message
+            };
+
+            context.Chat.Add(chat);
+            await context.SaveChangesAsync();
         }
 
     }
