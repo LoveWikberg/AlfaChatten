@@ -11,9 +11,10 @@ using System;
 namespace AlfaChatten.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180102121544_MessageDb")]
+    partial class MessageDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +76,7 @@ namespace AlfaChatten.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("AlfaChatten.Data.Chat", b =>
+            modelBuilder.Entity("AlfaChatten.Data.ChatMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -86,7 +87,7 @@ namespace AlfaChatten.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chat");
+                    b.ToTable("ChatMessage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

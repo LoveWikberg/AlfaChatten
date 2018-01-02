@@ -9,6 +9,8 @@ namespace AlfaChatten.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public virtual DbSet<Chat> Chat { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
