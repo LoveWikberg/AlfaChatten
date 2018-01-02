@@ -55,7 +55,6 @@
     //    }
     //    lastScrollTop = st;
     //});
-
 });
 
 function getWordAt(str, pos) {
@@ -88,12 +87,13 @@ function checkIfClientIsAuthorized() {
             $('#logedinInOrOut').removeClass("faded");
             editUserInterface(true, userName);
             getUserInfo();
-            console.log(userName);
+            getAllMessages(userName);
         })
         .fail(function (xhe, status, error) {
             $('#logedinInOrOut').removeClass("faded");
             console.log(xhe, status, error);
-        });
+            getAllMessages("");
+        })
 }
 
 function editUserInterface(isLogedIn, user) {

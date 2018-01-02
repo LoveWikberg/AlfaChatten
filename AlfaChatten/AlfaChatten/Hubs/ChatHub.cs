@@ -18,20 +18,24 @@ namespace AlfaChatten.Hubs
         }
 
         [Authorize]
-        public void Send(string message)
+        async public void Send(string message)
         {
             if (!string.IsNullOrWhiteSpace(message))
             {
                 var identityName = Context.User.Identity.Name;
 
-                dataManager.SaveMessageToDb(identityName, message);
+                var test = Context.ConnectionId;
 
                 List<string> caller = new List<string>
-            {
-                Context.ConnectionId
-            };
+                {
+                    Context.ConnectionId
+                };
 
-                Clients.AllExcept(caller).InvokeAsync("broadcastMessage", identityName, message);
+                await Clients.Client(caller[0]).InvokeAsync("broadcastMessageToSelf", message);
+
+                await Clients.AllExcept(caller).InvokeAsync("broadcastMessage", identityName, message);
+
+                dataManager.SaveMessageToDb(identityName, message);
             }
         }
     }
