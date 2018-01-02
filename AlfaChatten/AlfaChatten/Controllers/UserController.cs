@@ -48,10 +48,18 @@ namespace AlfaChatten.Controllers
             return Ok();
         }
 
-        [Authorize, HttpPut, Route("user")]
+        [Authorize, HttpPut]
         async public Task<IActionResult> EditUser(ApplicationUser user)
         {
-            return Ok();
+            try
+            {
+                await dataManager.EditUser(user);
+                return Ok($"{user.UserName} edited!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost, Route("create")]
