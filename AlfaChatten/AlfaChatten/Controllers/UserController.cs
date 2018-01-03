@@ -63,11 +63,11 @@ namespace AlfaChatten.Controllers
         }
 
         [HttpPost, Route("create")]
-        async public Task<IActionResult> CreateUser(string userName)
+        async public Task<IActionResult> CreateUser(ApplicationUser user)
         {
             try
             {
-                await dataManager.CreateUser(userName);
+                await dataManager.CreateUser(user);
                 return Ok();
             }
             catch (Exception e)

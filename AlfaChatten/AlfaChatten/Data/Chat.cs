@@ -1,4 +1,6 @@
-﻿namespace AlfaChatten.Data
+﻿using System;
+
+namespace AlfaChatten.Data
 {
     public class Chat
     {
@@ -7,5 +9,8 @@
         public string User { get; set; }
 
         public string Message { get; set; }
+
+        public DateTime TimeSent { get; set; }
+
     }
 }

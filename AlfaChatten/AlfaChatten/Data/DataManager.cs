@@ -26,15 +26,17 @@ namespace AlfaChatten.Data
             //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
 
-        async public Task CreateUser(string userName)
+        async public Task CreateUser(ApplicationUser user)
         {
-            if (await userManager.FindByNameAsync(userName) == null)
+            if (await userManager.FindByNameAsync(user.UserName) == null)
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = userName,
-                    ChatName = userName,
-                    Email = $"{userName}@gmail.com"
+                    UserName = user.UserName,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
+                    //ChatName = user.UserName,
                 };
                 await userManager.CreateAsync(newUser);
                 await signInManager.SignInAsync(newUser, false);
@@ -84,7 +86,8 @@ namespace AlfaChatten.Data
             Chat chat = new Chat
             {
                 User = userName,
-                Message = message
+                Message = message,
+                TimeSent = DateTime.Now
             };
 
             context.Chat.Add(chat);
@@ -93,7 +96,7 @@ namespace AlfaChatten.Data
 
         public List<Chat> GetAllChatMessagesFromDb()
         {
-            var chat = context.Chat.ToList();
+            var chat = context.Chat.OrderBy(c => c.TimeSent).ToList();
             return chat;
         }
 

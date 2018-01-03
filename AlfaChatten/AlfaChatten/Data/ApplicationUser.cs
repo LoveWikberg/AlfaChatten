@@ -9,6 +9,8 @@ namespace AlfaChatten.Data
     {
         public string ChatName { get; set; }
         public string Quote { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         [NotMapped]
         public string Image { get; set; }

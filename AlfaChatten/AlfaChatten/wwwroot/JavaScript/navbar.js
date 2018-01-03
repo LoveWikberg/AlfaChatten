@@ -88,7 +88,8 @@ function signOut() {
         method: "POST"
     })
         .done(function () {
-            editUserInterface(false, " ");
+            location.reload();
+            //editUserInterface(false, " ");
         })
         .fail(function (xhe, status, error) {
             alert("fail");
