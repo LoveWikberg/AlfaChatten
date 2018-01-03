@@ -77,7 +77,7 @@ namespace AlfaChatten.Data
             return searchResult;
         }
 
-        async public void SaveMessageToDb(string userName, string message)
+        public void SaveMessageToDb(string userName, string message)
         {
             Chat chat = new Chat
             {
@@ -86,7 +86,13 @@ namespace AlfaChatten.Data
             };
 
             context.Chat.Add(chat);
-            await context.SaveChangesAsync();
+            context.SaveChanges();
+        }
+
+        public List<Chat> GetAllChatMessagesFromDb()
+        {
+            var chat = context.Chat.ToList();
+            return chat;
         }
 
     }
