@@ -49,6 +49,21 @@
         getUserInfo({ userName: name });
     });
 
+    $(document).on("click", "#createAccount", function () {
+        var name = $('#userName').val();
+        createUser({ userName: name });
+    });
+
+    $('#createUserForm').on("submit", function (event) {
+        event.preventDefault();
+        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+            alert('The File APIs are not fully supported in this browser.');
+        }  
+        alert("kom hit");
+        //console.log($(this).serialize());
+        //var file = $('#createFile').prop('files');
+        //console.log(file);
+    });
 
     //var lastScrollTop = 0;
     //$window.scroll(function (event) {
@@ -109,6 +124,10 @@ function editUserInterface(isLogedIn, user) {
         html += '<span class="navbar-text">Logged in as: ' + user + '</span>';
         html += '&nbsp;';
         html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
+
+        $('#profileForm').attr('hidden', false);
+        $('#createUserForm').attr('hidden', true);
+
         $('#profileTab').removeClass("disabled");
         $('#profile').removeAttr("hidden");
         $('#messageInput').attr('placeholder', 'Write something...')
@@ -221,3 +240,20 @@ function generateProfileCard(user) {
     $('#cardQuote').text(user.quote);
     $('#profileCard').attr('hidden', false);
 }
+
+
+function createUser(data) {
+    $.ajax({
+        url: "api/user/create",
+        method: "POST",
+        data: data
+    })
+        .done(function (userName) {
+            location.reload();
+        })
+        .fail(function (xhr, status, error) {
+            alert("fail");
+            console.log(xhr, status, error);
+        });
+}
+

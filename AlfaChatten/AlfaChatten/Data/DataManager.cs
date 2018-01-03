@@ -32,7 +32,7 @@ namespace AlfaChatten.Data
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = user.UserName,
+                    UserName = $"{user.FirstName}{user.LastName}",
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email

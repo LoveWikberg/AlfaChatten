@@ -4,10 +4,6 @@
         signIn({ userName: name });
     });
 
-    $(document).on("click", "#createAccount", function () {
-        var name = $('#userName').val();
-        createUser({ userName: name });
-    });
 
     $(document).on("click", "#signOut", function () {
         signOut();
@@ -45,24 +41,6 @@ function fixNavbar() {
     }
 }
 
-function createUser(data) {
-    $.ajax({
-        url: "api/user/create",
-        method: "POST",
-        data: data
-    })
-        .done(function (userName) {
-            location.reload();
-            //editUserInterface(true, data.userName);
-            //getUserInfo();
-            //console.log(userName);
-        })
-        .fail(function (xhr, status, error) {
-            validateSignIn();
-            alert("fail");
-            console.log(xhr, status, error);
-        });
-}
 
 function signIn(data) {
     $.ajax({
