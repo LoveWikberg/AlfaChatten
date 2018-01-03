@@ -49,6 +49,11 @@
         getUserInfo({ userName: name });
     });
 
+    $("#deleteBtn").click(function (event) {
+        event.preventDefault();
+        removeUser();
+    })
+
 
     //var lastScrollTop = 0;
     //$window.scroll(function (event) {
@@ -220,4 +225,20 @@ function generateProfileCard(user) {
     $('#cardUserName').text(user.userName);
     $('#cardQuote').text(user.quote);
     $('#profileCard').attr('hidden', false);
+}
+
+function removeUser() {
+    $.ajax({
+        url: "api/user",
+        method: "DELETE"
+    })
+        .done(function (result) {
+            console.log(result);
+            location.reload(true);
+        })
+
+        .fail(function (xhe, status, error) {
+            alert("fail");
+            console.log(xhe, status, error);
+        });
 }

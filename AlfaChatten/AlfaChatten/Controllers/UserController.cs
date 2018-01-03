@@ -41,11 +41,12 @@ namespace AlfaChatten.Controllers
             }
         }
 
-        [Authorize, HttpDelete, Route("user")]
+        [Authorize, HttpDelete]
         async public Task<IActionResult> RemoveUser()
         {
             await dataManager.RemoveUser(HttpContext.User.Identity.Name);
-            return Ok();
+            await signInManager.SignOutAsync();
+            return Ok("User deleted.");
         }
 
         [Authorize, HttpPut]

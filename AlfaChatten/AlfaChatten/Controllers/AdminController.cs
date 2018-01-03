@@ -19,10 +19,10 @@ namespace AlfaChatten.Controllers
             return Ok();
         }
 
-        [HttpDelete, Route("user")]
+        [HttpDelete, Route("remove")]
         async public Task<IActionResult> RemoveUser(string userName)
         {
-            return Ok();
+            return Ok($"{userName} removed");
         }
 
     }
