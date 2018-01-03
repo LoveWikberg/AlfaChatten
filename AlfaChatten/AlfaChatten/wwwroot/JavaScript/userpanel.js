@@ -34,6 +34,7 @@
     });
 
     $('#userSearch').keyup(function () {
+        $('#profileCard').attr('hidden', true);
         searchUser({ searchInput: $(this).val() });
     });
 
@@ -212,6 +213,11 @@ function getHtmlForSearchResult(user) {
 
 function generateProfileCard(user) {
     $('#userSearchResult').empty();
-
-
+    if (user.image === null)
+        $('#profileCard img').attr('src', 'Images/ProfileImages/Default.png')
+    else
+        $('#profileCard img').attr('src', 'Images/ProfileImages/' + user.image + '');
+    $('#cardUserName').text(user.userName);
+    $('#cardQuote').text(user.quote);
+    $('#profileCard').attr('hidden', false);
 }

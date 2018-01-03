@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -68,6 +69,7 @@ namespace AlfaChatten.Data
         async public Task<ApplicationUser> GetUserInfo(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
+            user.Image = GetFileNameAndExtension(user.Id, @"Images\ProfileImages");
             return user;
         }
 
@@ -95,5 +97,29 @@ namespace AlfaChatten.Data
             return chat;
         }
 
+        public string GetFileNameAndExtension(string id, string rootChildFolder)
+        {
+            try
+            {
+                string path = Directory.GetCurrentDirectory() + @"\wwwroot\" + rootChildFolder + @"\";
+                string[] dir = Directory.GetFiles(path, id + "*");
+                //If the the dir-array contains more than one element, find the file that match the id-variable.
+                for (int i = 0; i < dir.Length; i++)
+                {
+                    string fileName = Path.GetFileName(dir[i]);
+                    string[] fileNameSplit = fileName.Split('.');
+                    if (fileNameSplit[0] == id)
+                    {
+                        string extension = Path.GetExtension(dir[i]);
+                        return string.Format("{0}{1}", id, extension);
+                    }
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }
