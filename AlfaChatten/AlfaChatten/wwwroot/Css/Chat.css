@@ -5,7 +5,7 @@
 
 .chatBubble {
     word-wrap: break-word;
-    max-width: 45%;
+    max-width: 55%;
     margin: 2%;
     border-radius: 10px;
     padding: 2%;
@@ -19,6 +19,8 @@
 .blue {
     background-color: #1410fd;
     color: white;
+    margin-right: 0;
+    margin-left: auto;
 }
 
 .chatContent {
@@ -26,6 +28,8 @@
     height: 75%;
     border: solid black 2px;
     overflow: auto;
+    padding: 20px;
+    padding-right: 30px;
 }
 
 .chatInput {

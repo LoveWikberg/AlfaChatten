@@ -49,9 +49,7 @@ function getAllMessages(userName) {
         .done(function (result) {
             console.log(result);
             result.forEach(function (chat) {
-                console.log(chat);
-                console.log(userName);
-                printMessage(chat, userName);
+                checkMessageOrigin(chat, userName);
             });
             $(".chatContent").animate({ scrollTop: $(".chatContent")[0].scrollHeight });
         })
@@ -60,30 +58,30 @@ function getAllMessages(userName) {
         });
 }
 
-function printMessage(chat, userName) {
+function checkMessageOrigin(chat, userName) {
 
     if (chat.user === userName) {
-        printOwnMessage(chat, true);
+        printMessage(chat, true);
     }
     else {
-        printOwnMessage(chat, false)
+        printMessage(chat, false)
     }
 
 }
 
-function printOwnMessage(chat, isOwnMessage) {
+function printMessage(chat, isOwnMessage) {
     if (isOwnMessage) {
-        var html = '<div class="chatBubble blue"><p>' + chat.message + '<b> - you</b></p>';
+        var html = '<div><p class="chatBubble blue">' + chat.message + '<b> - you</b></p>';
     }
     else {
-        var html = '<div class="chatBubble gray"><p>' + chat.message + '<b> - ' + chat.user + '</b></p>';
+        var html = '<div><p class="chatBubble gray">' + chat.message + '<b> - ' + chat.user + '</b></p>';
     }
     html += '</div>';
     $('.chatContent').append(html);
 }
 
 function temporaryPrintOwnMessage(message) {
-    var html = '<div class="chatBubble blue" style="float:right;"><p>' + message + '<b> - you</b></p>';
+    var html = '<div class="chatBubble blue"><p>' + message + '<b> - you</b></p>';
     html += '</div>';
     $('.chatContent').append(html);
     $(".chatContent").animate({ scrollTop: $(".chatContent")[0].scrollHeight });
