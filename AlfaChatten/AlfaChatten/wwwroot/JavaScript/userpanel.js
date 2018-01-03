@@ -54,15 +54,17 @@
         createUser({ userName: name });
     });
 
+
+    // LOVE FIXA DET HÄR
+    // PROFILBILD SKA BARA GÅ ATT ÄNDRA EFTER ATT MAN HAR SKAPAT ANVÄNDARE
     $('#createUserForm').on("submit", function (event) {
         event.preventDefault();
-        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-            alert('The File APIs are not fully supported in this browser.');
-        }  
-        alert("kom hit");
-        //console.log($(this).serialize());
-        //var file = $('#createFile').prop('files');
-        //console.log(file);
+        var formData = $(this).serializeArray();
+        var data = new FormData();
+        var files = $('#createFile').get(0).files;
+        data.append('image', files[0]);
+        createUser(formData);
+
     });
 
     //var lastScrollTop = 0;
@@ -246,6 +248,8 @@ function createUser(data) {
     $.ajax({
         url: "api/user/create",
         method: "POST",
+        contentType: false,
+        processData: false,
         data: data
     })
         .done(function (userName) {
