@@ -43,6 +43,12 @@
         editUserProfile(formData);
     });
 
+    $(document).on('click', '#userSearchResult li', function () {
+        var name = $(this).text();
+        getUserInfo({ userName: name });
+    });
+
+
     //var lastScrollTop = 0;
     //$window.scroll(function (event) {
     //    var st = $(this).scrollTop();
@@ -86,7 +92,7 @@ function checkIfClientIsAuthorized() {
         .done(function (userName) {
             $('#logedinInOrOut').removeClass("faded");
             editUserInterface(true, userName);
-            getUserInfo();
+            getLoggedInUsersInfo();
             getAllMessages(userName);
         })
         .fail(function (xhe, status, error) {
@@ -127,6 +133,21 @@ function editUserInterface(isLogedIn, user) {
 
 // TODO
 // Make some data editable
+function getLoggedInUsersInfo(data) {
+    $.ajax({
+        url: "api/user/loggedInUsersInfo",
+        method: "GET",
+        data: data
+    })
+        .done(function (user) {
+            populateProfileForm(user);
+            console.log(user);
+        })
+        .fail(function (xhr, status, error) {
+            console.log(xhr, status, error);
+        });
+}
+
 function getUserInfo(data) {
     $.ajax({
         url: "api/user/userInfo",
@@ -134,8 +155,8 @@ function getUserInfo(data) {
         data: data
     })
         .done(function (user) {
-            populateProfileForm(user);
             console.log(user);
+            generateProfileCard(user);
         })
         .fail(function (xhr, status, error) {
             console.log(xhr, status, error);
@@ -187,4 +208,10 @@ function searchUser(data) {
 function getHtmlForSearchResult(user) {
     var html = '<li class="list-group-item">' + user.userName + '</li>';
     return html;
+}
+
+function generateProfileCard(user) {
+    $('#userSearchResult').empty();
+
+
 }
