@@ -49,12 +49,20 @@
         <div class="row justify-content-md-center">
             <div class="col-md-6 chatContainer">
                 <div class="chatContent">
-                
+
                 </div>
+                <hr />
                 <form id="chatForm" class="chatInput">
                     <fieldset id="chatFieldSet" disabled>
-                        <input type="text" id="messageInput" placeholder="Sign in to chat" />
-                        <input type="submit" value="send" />
+                        <div class="input-group">
+                            <textarea type="text" class="form-control" id="messageInput" placeholder="Sign in to chat" rows="6"></textarea>
+                            <span class="input-group-btn" id="addon">
+                                <button class="btn btn-secondary" type="submit" id="chatFormSubmitBtn">
+                                    <i class="fa fa-arrow-circle-o-right fa-3x" style="border:none"></i>
+                                </button>
+                            </span>
+                            <!--<input type="submit" value="send" />-->
+                        </div>
                     </fieldset>
                 </form>
                 <!--<input type="text" id="message" />
