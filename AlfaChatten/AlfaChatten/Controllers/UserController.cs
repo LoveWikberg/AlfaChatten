@@ -83,14 +83,6 @@ namespace AlfaChatten.Controllers
             return Ok();
         }
 
-        [HttpGet, Route("signintest")]
-        async public Task<IActionResult> Testsingin()
-        {
-            var user = await userManager.FindByNameAsync("kalle");
-            await signInManager.SignInAsync(user, true);
-            return Ok(user);
-        }
-
         [HttpGet, Route("checkAuth")]
         public IActionResult TestAuth()
         {
@@ -100,12 +92,20 @@ namespace AlfaChatten.Controllers
                 return Unauthorized();
         }
 
-        [Authorize, HttpGet, Route("userInfo")]
-        async public Task<IActionResult> GetUserInfo()
+        [Authorize, HttpGet, Route("loggedInUsersInfo")]
+        async public Task<IActionResult> GetLoggedInUsersInfo()
         {
             var user = await dataManager.GetUserInfo(HttpContext.User.Identity.Name);
             return Ok(user);
         }
+
+        [HttpGet, Route("userInfo")]
+        async public Task<IActionResult> GetUserInfo(string username)
+        {
+            var user = await dataManager.GetUserInfo(username);
+            return Ok(user);
+        }
+
 
         [HttpGet, Route("searchUser")]
         public IActionResult SearchUser(string searchInput)

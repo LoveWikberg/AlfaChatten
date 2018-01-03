@@ -7,3 +7,25 @@
 .faded{
     opacity:0.5;
 }
+
+#userSearchResult li:hover{
+    cursor:pointer;
+    background-color:#f1f1f1;
+}
+
+.profileCard{
+    padding:1%;
+    border-radius:10px;
+    border: 1px black solid;
+    background-color:white;
+}
+
+.card {
+    width: 20rem;
+    margin: auto;
+}
+
+.card img {
+    margin: auto;
+    max-height:30vh;
+}
