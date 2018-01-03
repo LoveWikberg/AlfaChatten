@@ -1,23 +1,24 @@
 ﻿.userPanelContainer {
-    background-color: #efefef;
+    background-color: white;
     border: solid black 1px;
-    height:100vh;
+    height: 100vh;
 }
 
-.faded{
-    opacity:0.5;
+.faded {
+    opacity: 0.5;
 }
 
-#userSearchResult li:hover{
-    cursor:pointer;
-    background-color:#f1f1f1;
+#userSearchResult li:hover {
+    cursor: pointer;
+    background-color: #f1f1f1;
 }
 
-.profileCard{
-    padding:1%;
-    border-radius:10px;
-    border: 1px black solid;
-    background-color:white;
+#profileCard {
+    padding: 1%;
+    border-radius: 30px;
+    border: 2px solid cornflowerblue;
+    /*background-color: #eceeef;*/
+    margin-top: 50px;
 }
 
 .card {
@@ -26,6 +27,14 @@
 }
 
 .card img {
+    width: 100px;
+    height: 100px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    max-height: 30vh;
     margin: auto;
-    max-height:30vh;
+    border: solid 5px gray;
+}
+
+.cardTextDesign {
 }

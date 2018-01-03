@@ -55,8 +55,8 @@
                 <form id="chatForm" class="chatInput">
                     <fieldset id="chatFieldSet" disabled>
                         <div class="input-group">
-                            <textarea type="text" class="form-control" id="messageInput" placeholder="Sign in to chat" rows="6"></textarea>
-                            <span class="input-group-btn" id="addon">
+                            <textarea type="text" class="form-control" id="messageInput" placeholder="Sign in to chat" rows="5"></textarea>
+                            <span class="input-group-btn" id="addon" style="z-index: 0;">
                                 <button class="btn btn-secondary" type="submit" id="chatFormSubmitBtn">
                                     <i class="fa fa-arrow-circle-o-right fa-3x" style="border:none"></i>
                                 </button>
@@ -132,34 +132,35 @@
                         <div id="profileCard" class="card" hidden>
                             <img class="card-img-top" alt="Card image cap">
                             <div class="card-block">
-                                <h4 id="cardUserName" class="card-title"></h4>
-                                <p class="card-text"><i id="cardQuote"></i></p>
-                                <button class="btn btn-primary">Send message</button>
+                                <h4 id="cardUserName" class="card-title "></h4>
+                            </div>
+                            <p class="card-text cardTextDesign"><i id="cardQuote"></i></p>
+                            <button class="btn btn-primary">Send message</button>
+                        </div>
+                    </div>
+                    <!--<div class="profileCard">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="http://web.gndu.ac.in/assets/dist/img/no-profile-img.jpg" height="60" width="40" alt="Error"/>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Namn: Love</h4>
+                                <h4>Email: lovecool@gmail.com</h4>
+                                <h4><i>Just idag är jag stark</i></h4>
                             </div>
                         </div>
-                        <!--<div class="profileCard">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="http://web.gndu.ac.in/assets/dist/img/no-profile-img.jpg" height="60" width="40" alt="Error"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4>Namn: Love</h4>
-                                    <h4>Email: lovecool@gmail.com</h4>
-                                    <h4><i>Just idag är jag stark</i></h4>
-                                </div>
-                            </div>
-                        </div>-->
-                        <ul class="list-group" id="userSearchResult"></ul>
-                    </div>
+                    </div>-->
+                    <ul class="list-group" id="userSearchResult"></ul>
                 </div>
             </div>
         </div>
-        <div id="showNav" class="rounded-circle">
-            <i class="fa fa-bars"></i>
-        </div>
-        <div id="toogleChatOrUserPanel" class="rounded-circle">
-            <i class="fa fa-address-card" aria-hidden="true"></i>
-        </div>
+    </div>
+    <div id="showNav" class="rounded-circle">
+        <i class="fa fa-bars"></i>
+    </div>
+    <div id="toogleChatOrUserPanel" class="rounded-circle">
+        <i class="fa fa-address-card" aria-hidden="true"></i>
+    </div>
     </div>
     <script src="JavaScript/navbar.js"></script>
     <script src="../JavaScript/userpanel.js"></script>
