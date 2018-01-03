@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,15 +15,17 @@ namespace AlfaChatten.Data
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly ApplicationDbContext context;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public DataManager(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager
-            , RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+            , RoleManager<IdentityRole> roleManager, ApplicationDbContext context
+            , IHostingEnvironment hostingEnvironment)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.context = context;
-
+            this.hostingEnvironment = hostingEnvironment;
             context.Database.EnsureCreated();
             //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
@@ -122,6 +126,19 @@ namespace AlfaChatten.Data
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+        async public void SaveProfileImageFile(IFormFile image)
+        {
+            var uploads = Path.Combine(hostingEnvironment.WebRootPath, @"Images\ProfileImages");
+            if (image.Length > 0)
+            {
+                var filePath = Path.Combine(uploads, $"{"testimg"}{Path.GetExtension(image.FileName)}");
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(fileStream);
+                }
             }
         }
     }
