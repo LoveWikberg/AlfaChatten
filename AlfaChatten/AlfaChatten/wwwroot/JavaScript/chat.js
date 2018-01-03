@@ -73,7 +73,7 @@ function printMessage(chat, userName) {
 
 function printOwnMessage(chat, isOwnMessage) {
     if (isOwnMessage) {
-        var html = '<div class="chatBubble blue" style="float:right;"><p>' + chat.message + '<b> - you</b></p>';
+        var html = '<div class="chatBubble blue"><p>' + chat.message + '<b> - you</b></p>';
     }
     else {
         var html = '<div class="chatBubble gray"><p>' + chat.message + '<b> - ' + chat.user + '</b></p>';
