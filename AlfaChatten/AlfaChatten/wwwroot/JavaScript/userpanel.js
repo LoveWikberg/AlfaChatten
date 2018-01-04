@@ -60,11 +60,23 @@
     $('#createUserForm').on("submit", function (event) {
         event.preventDefault();
         var formData = $(this).serializeArray();
-        var data = new FormData();
-        var files = $('#createFile').get(0).files;
-        data.append('image', files[0]);
         createUser(formData);
+    });
 
+    $('#editProfileImageForm').on("submit", function (event) {
+        event.preventDefault();
+        var data = new FormData();
+        var files = $('#profileImage').get(0).files;
+        data.append('image', files[0]);
+        editProfileImageAjax(data);
+    });
+
+    $('#createFirstName,#createLastName').keyup(function () {
+        var firstName = $('#createFirstName').val();
+        var lastName = $('#createLastName').val();
+        firstName = firstName.replace(/\s/g, '');
+        lastName = lastName.replace(/\s/g, '');
+        $('#createUserName').val(firstName + lastName);
     });
 
     //var lastScrollTop = 0;
@@ -127,11 +139,11 @@ function editUserInterface(isLogedIn, user) {
         html += '&nbsp;';
         html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
 
-        $('#profileForm').attr('hidden', false);
+        $('#editProfileContent').attr('hidden', false);
         $('#createUserForm').attr('hidden', true);
 
-        $('#profileTab').removeClass("disabled");
-        $('#profile').removeAttr("hidden");
+        //$('#profileTab').removeClass("disabled");
+        //$('#profile').removeAttr("hidden");
         $('#messageInput').attr('placeholder', 'Write something...')
         $('#chatFieldSet').removeAttr("disabled");
     }
@@ -140,12 +152,12 @@ function editUserInterface(isLogedIn, user) {
         html += '<button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>';
         html += '&nbsp;';
         html += '<button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>';
-        if ($('#profileTab').hasClass("active")) {
-            $('#profileTab').trigger("click");
-            $('#profileTab').removeClass("active");
-            $('#profile').attr("hidden", true);
-        }
-        $('#profileTab').addClass("disabled");
+        //if ($('#profileTab').hasClass("active")) {
+        //    $('#profileTab').trigger("click");
+        //    $('#profileTab').removeClass("active");
+        //    $('#profile').attr("hidden", true);
+        //}
+        //$('#profileTab').addClass("disabled");
         $('#messageInput').attr('placeholder', 'Sign in to chat')
         $('#chatFieldSet').attr("disabled", true);
     }
@@ -248,6 +260,21 @@ function createUser(data) {
     $.ajax({
         url: "api/user/create",
         method: "POST",
+        data: data
+    })
+        .done(function (userName) {
+            location.reload();
+        })
+        .fail(function (xhr, status, error) {
+            alert("fail");
+            console.log(xhr, status, error);
+        });
+}
+
+function editProfileImageAjax(data) {
+    $.ajax({
+        url: "api/user/image",
+        method: "PUT",
         contentType: false,
         processData: false,
         data: data
