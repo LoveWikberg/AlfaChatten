@@ -67,8 +67,23 @@ namespace AlfaChatten.Controllers
             }
         }
 
+        [Authorize, HttpPut, Route("image")]
+        async public Task<IActionResult> EditProfileImage(IFormFile image)
+        {
+            try
+            {
+                var user = await userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+                await dataManager.SaveProfileImageFile(image, user.Id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost, Route("create")]
-        async public Task<IActionResult> CreateUser(ApplicationUser user/*, IFormFile image*/)
+        async public Task<IActionResult> CreateUser(ApplicationUser user)
         {
             try
             {

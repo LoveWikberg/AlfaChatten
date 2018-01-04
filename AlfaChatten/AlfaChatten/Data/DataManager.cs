@@ -108,7 +108,8 @@ namespace AlfaChatten.Data
         {
             try
             {
-                string path = Directory.GetCurrentDirectory() + @"\wwwroot\" + rootChildFolder + @"\";
+                string path = $"{hostingEnvironment.WebRootPath}\\{rootChildFolder}";
+                //string path = Directory.GetCurrentDirectory() + @"\wwwroot\" + rootChildFolder + @"\";
                 string[] dir = Directory.GetFiles(path, id + "*");
                 //If the the dir-array contains more than one element, find the file that match the id-variable.
                 for (int i = 0; i < dir.Length; i++)
@@ -118,7 +119,7 @@ namespace AlfaChatten.Data
                     if (fileNameSplit[0] == id)
                     {
                         string extension = Path.GetExtension(dir[i]);
-                        return string.Format("{0}{1}", id, extension);
+                        return $"{id}{extension}";
                     }
                 }
                 return null;
@@ -129,15 +130,29 @@ namespace AlfaChatten.Data
             }
         }
 
-        async public void SaveProfileImageFile(IFormFile image)
+        async public Task SaveProfileImageFile(IFormFile image, string id)
         {
             var uploads = Path.Combine(hostingEnvironment.WebRootPath, @"Images\ProfileImages");
             if (image.Length > 0)
             {
-                var filePath = Path.Combine(uploads, $"{"testimg"}{Path.GetExtension(image.FileName)}");
+                var filePath = Path.Combine(uploads, $"{id}{Path.GetExtension(image.FileName)}");
+                RemoveExistingImage(uploads, id);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await image.CopyToAsync(fileStream);
+                }
+            }
+        }
+
+        void RemoveExistingImage(string path, string fileName)
+        {
+            var files = Directory.GetFiles(path).ToList();
+            foreach (var file in files)
+            {
+                if (file.Contains(fileName))
+                {
+                    File.Delete(file);
+                    break;
                 }
             }
         }
