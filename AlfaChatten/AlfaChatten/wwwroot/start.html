@@ -84,7 +84,11 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane" id="profile" role="tabpanel">
-                        <form id="createUserForm" enctype="multipart/form-data">
+                        <form id="createUserForm">
+                            <div class="form-group">
+                                <label for="createUserName">User name</label>
+                                <input id="createUserName" name="userName" class="form-control" readonly/>
+                            </div>
                             <div class="form-group">
                                 <label for="createFirstName">First name</label>
                                 <input id="createFirstName" name="firstName" class="form-control" />
@@ -97,31 +101,37 @@
                                 <label for="createEmail">Email</label>
                                 <input id="createEmail" name="email" class="form-control" type="email" />
                             </div>
-                            <div class="form-group">
-                                <label for="createFile">File input</label>
-                                <input type="file" class="form-control-file" id="createFile" name="image">
-                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
-                        <form id="profileForm" hidden>
-                            <div class="form-group">
-                                <label for="formUserName">User name</label>
-                                <input id="formUserName" name="userName" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="formEmail">Email</label>
-                                <input id="formEmail" name="email" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="formChatName">Chat name</label>
-                                <input id="formChatName" name="chatName" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="formQuote">Quote</label>
-                                <input id="formQuote" name="Quote" class="form-control" />
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+
+                        <div id="editProfileContent" hidden>
+                            <form id="editProfileImageForm" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="createFile">File input</label>
+                                    <input type="file" class="form-control-file" id="profileImage">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label for="formUserName">User name</label>
+                                    <input id="formUserName" name="userName" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="formEmail">Email</label>
+                                    <input id="formEmail" name="email" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="formChatName">Chat name</label>
+                                    <input id="formChatName" name="chatName" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="formQuote">Quote</label>
+                                    <input id="formQuote" name="Quote" class="form-control" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
                     </div>
                     <div class="tab-pane" id="users" role="tabpanel">
                         <br />
@@ -134,32 +144,20 @@
                             <div class="card-block">
                                 <h4 id="cardUserName" class="card-title"></h4>
                                 <p class="card-text"><i id="cardQuote"></i></p>
-                                <button class="btn btn-primary">Send message</button>
+                                <button class="btn btn-outline-primary">Send message</button>
                             </div>
                         </div>
-                        <!--<div class="profileCard">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="http://web.gndu.ac.in/assets/dist/img/no-profile-img.jpg" height="60" width="40" alt="Error"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4>Namn: Love</h4>
-                                    <h4>Email: lovecool@gmail.com</h4>
-                                    <h4><i>Just idag är jag stark</i></h4>
-                                </div>
-                            </div>
-                        </div>-->
                         <ul class="list-group" id="userSearchResult"></ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="showNav" class="rounded-circle">
-            <i class="fa fa-bars"></i>
-        </div>
-        <div id="toogleChatOrUserPanel" class="rounded-circle">
-            <i class="fa fa-address-card" aria-hidden="true"></i>
-        </div>
+    </div>
+    <div id="showNav" class="rounded-circle">
+        <i class="fa fa-bars"></i>
+    </div>
+    <div id="toogleChatOrUserPanel" class="rounded-circle">
+        <i class="fa fa-address-card" aria-hidden="true"></i>
     </div>
     <script src="JavaScript/navbar.js"></script>
     <script src="../JavaScript/userpanel.js"></script>

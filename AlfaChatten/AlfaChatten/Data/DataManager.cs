@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,15 +15,17 @@ namespace AlfaChatten.Data
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly ApplicationDbContext context;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public DataManager(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager
-            , RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+            , RoleManager<IdentityRole> roleManager, ApplicationDbContext context
+            , IHostingEnvironment hostingEnvironment)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.context = context;
-
+            this.hostingEnvironment = hostingEnvironment;
             context.Database.EnsureCreated();
             //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
@@ -104,7 +108,8 @@ namespace AlfaChatten.Data
         {
             try
             {
-                string path = Directory.GetCurrentDirectory() + @"\wwwroot\" + rootChildFolder + @"\";
+                string path = $"{hostingEnvironment.WebRootPath}\\{rootChildFolder}";
+                //string path = Directory.GetCurrentDirectory() + @"\wwwroot\" + rootChildFolder + @"\";
                 string[] dir = Directory.GetFiles(path, id + "*");
                 //If the the dir-array contains more than one element, find the file that match the id-variable.
                 for (int i = 0; i < dir.Length; i++)
@@ -114,7 +119,7 @@ namespace AlfaChatten.Data
                     if (fileNameSplit[0] == id)
                     {
                         string extension = Path.GetExtension(dir[i]);
-                        return string.Format("{0}{1}", id, extension);
+                        return $"{id}{extension}";
                     }
                 }
                 return null;
@@ -122,6 +127,33 @@ namespace AlfaChatten.Data
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+        async public Task SaveProfileImageFile(IFormFile image, string id)
+        {
+            var uploads = Path.Combine(hostingEnvironment.WebRootPath, @"Images\ProfileImages");
+            if (image.Length > 0)
+            {
+                var filePath = Path.Combine(uploads, $"{id}{Path.GetExtension(image.FileName)}");
+                RemoveExistingImage(uploads, id);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(fileStream);
+                }
+            }
+        }
+
+        void RemoveExistingImage(string path, string fileName)
+        {
+            var files = Directory.GetFiles(path).ToList();
+            foreach (var file in files)
+            {
+                if (file.Contains(fileName))
+                {
+                    File.Delete(file);
+                    break;
+                }
             }
         }
     }

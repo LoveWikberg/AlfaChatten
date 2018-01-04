@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using AlfaChatten.Data;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,13 +21,15 @@ namespace AlfaChatten.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly DataManager dataManager;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager
-            , DataManager dataManager)
+            , DataManager dataManager, IHostingEnvironment hostingEnvironment)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.dataManager = dataManager;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         [HttpPost, Route("signIn")]
@@ -55,6 +60,21 @@ namespace AlfaChatten.Controllers
             {
                 await dataManager.EditUser(user);
                 return Ok($"{user.UserName} edited!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize, HttpPut, Route("image")]
+        async public Task<IActionResult> EditProfileImage(IFormFile image)
+        {
+            try
+            {
+                var user = await userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+                await dataManager.SaveProfileImageFile(image, user.Id);
+                return Ok();
             }
             catch (Exception e)
             {
