@@ -79,6 +79,11 @@
         $('#createUserName').val(firstName + lastName);
     });
 
+    $("#deleteUser").click(function (event) {
+        event.preventDefault();
+        removeUser();
+    });
+
     //var lastScrollTop = 0;
     //$window.scroll(function (event) {
     //    var st = $(this).scrollTop();
@@ -281,6 +286,21 @@ function editProfileImageAjax(data) {
     })
         .done(function (userName) {
             location.reload();
+        })
+        .fail(function (xhr, status, error) {
+            alert("fail");
+            console.log(xhr, status, error);
+        });
+}
+
+function removeUser() {
+    $.ajax({
+        url: "api/user",
+        method: "DELETE",
+    })
+        .done(function (result) {
+            console.log(result);
+            location.reload(true);
         })
         .fail(function (xhr, status, error) {
             alert("fail");
