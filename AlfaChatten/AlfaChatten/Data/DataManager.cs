@@ -36,7 +36,8 @@ namespace AlfaChatten.Data
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = $"{user.FirstName}{user.LastName}",
+                    //UserName = $"{user.FirstName}{user.LastName}",
+                    UserName = user.UserName,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email
@@ -44,7 +45,7 @@ namespace AlfaChatten.Data
                 };
                 await userManager.CreateAsync(newUser);
                 await signInManager.SignInAsync(newUser, false);
-            }
+                }
             else
                 throw new Exception("User name is taken");
         }
