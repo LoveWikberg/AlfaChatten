@@ -51,8 +51,9 @@ namespace AlfaChatten.Controllers
         {
             if (!string.IsNullOrEmpty(HttpContext.User.Identity.Name))
             {
+                await dataManager.SignOut(HttpContext.User.Identity.Name);
                 await dataManager.RemoveUser(HttpContext.User.Identity.Name);
-                await signInManager.SignOutAsync();
+                //await signInManager.SignOutAsync();
 
                 return Ok("User deleted.");
             }
@@ -95,7 +96,7 @@ namespace AlfaChatten.Controllers
             try
             {
                 await dataManager.CreateUser(user);
-                return Ok();
+                return Ok(user);
             }
             catch (Exception e)
             {
@@ -106,8 +107,8 @@ namespace AlfaChatten.Controllers
         [Authorize, HttpPost, Route("signOut")]
         async public Task<IActionResult> SignOut()
         {
-            await signInManager.SignOutAsync();
-            return Ok();
+            await dataManager.SignOut(HttpContext.User.Identity.Name);
+            return Ok("Signed out..");
         }
 
         [HttpGet, Route("checkAuth")]

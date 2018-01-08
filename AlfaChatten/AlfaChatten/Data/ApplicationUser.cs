@@ -11,6 +11,7 @@ namespace AlfaChatten.Data
         public string Quote { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public bool IsSignedIn { get; set; }
 
         [NotMapped]
         public string Image { get; set; }

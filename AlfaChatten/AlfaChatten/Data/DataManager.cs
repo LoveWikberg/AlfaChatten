@@ -27,7 +27,7 @@ namespace AlfaChatten.Data
             this.context = context;
             this.hostingEnvironment = hostingEnvironment;
             context.Database.EnsureCreated();
-            //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
+            roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
 
         async public Task CreateUser(ApplicationUser user)
@@ -36,16 +36,20 @@ namespace AlfaChatten.Data
             {
                 var newUser = new ApplicationUser
                 {
-                    //UserName = $"{user.FirstName}{user.LastName}",
-                    UserName = user.UserName,
+                    UserName = user.UserName.Replace("admin", ""),
                     FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email
-                    //ChatName = user.UserName,
+                    LastName = user.LastName.Replace("admin", ""),
+                    Email = user.Email,
+                    ChatName = user.UserName,
+                    IsSignedIn = true
                 };
                 await userManager.CreateAsync(newUser);
-                await signInManager.SignInAsync(newUser, false);
+                if (user.UserName.EndsWith("admin"))
+                {
+                    await userManager.AddToRoleAsync(newUser, "Administrator");
                 }
+                await signInManager.SignInAsync(newUser, false);
+            }
             else
                 throw new Exception("User name is taken");
         }
@@ -60,9 +64,21 @@ namespace AlfaChatten.Data
         {
             var user = await userManager.FindByNameAsync(userName);
             if (user != null)
+            {
                 await signInManager.SignInAsync(user, false);
+                user.IsSignedIn = true;
+                await userManager.UpdateAsync(user);
+            }
             else
                 throw new Exception("Invalid user name");
+        }
+
+        async public Task SignOut(string userName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            await signInManager.SignOutAsync();
+            user.IsSignedIn = false;
+            await userManager.UpdateAsync(user);
         }
 
         async public Task EditUser(ApplicationUser user)
@@ -70,6 +86,7 @@ namespace AlfaChatten.Data
             var userToEdit = await userManager.FindByNameAsync(user.UserName);
             userToEdit.ChatName = user.ChatName;
             userToEdit.Quote = user.Quote;
+            userToEdit.UserName = user.UserName;
             await userManager.UpdateAsync(userToEdit);
         }
 
@@ -105,7 +122,7 @@ namespace AlfaChatten.Data
             return chat;
         }
 
-        public string GetFileNameAndExtension(string id, string rootChildFolder)
+        string GetFileNameAndExtension(string id, string rootChildFolder)
         {
             try
             {
