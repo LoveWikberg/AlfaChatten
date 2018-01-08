@@ -40,6 +40,8 @@
 
     $('#profileForm').on("submit", function (event) {
         event.preventDefault();
+        var html = '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i>'
+        $('#editFormSubmitBtn').html(html);
         var formData = $(this).serialize();
         editUserProfile(formData);
     });
@@ -146,9 +148,7 @@ function editUserInterface(isLogedIn, user) {
 
         $('#editProfileContent').attr('hidden', false);
         $('#createUserForm').attr('hidden', true);
-
-        //$('#profileTab').removeClass("disabled");
-        //$('#profile').removeAttr("hidden");
+        $('#profileTab').text("Profile"); 
         $('#messageInput').attr('placeholder', 'Write something...')
         $('#chatFieldSet').removeAttr("disabled");
     }
@@ -157,12 +157,6 @@ function editUserInterface(isLogedIn, user) {
         html += '<button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>';
         html += '&nbsp;';
         html += '<button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>';
-        //if ($('#profileTab').hasClass("active")) {
-        //    $('#profileTab').trigger("click");
-        //    $('#profileTab').removeClass("active");
-        //    $('#profile').attr("hidden", true);
-        //}
-        //$('#profileTab').addClass("disabled");
         $('#messageInput').attr('placeholder', 'Sign in to chat')
         $('#chatFieldSet').attr("disabled", true);
     }
@@ -222,6 +216,9 @@ function editUserProfile(formData) {
         .fail(function (xhe, status, error) {
             alert("fail");
             console.log(xhe, status, error);
+        })
+        .always(function () {
+            $('#editFormSubmitBtn').html("Submit");
         });
 }
 
@@ -284,8 +281,8 @@ function editProfileImageAjax(data) {
         processData: false,
         data: data
     })
-        .done(function (userName) {
-            location.reload();
+        .done(function (image) {
+            console.log(image);
         })
         .fail(function (xhr, status, error) {
             alert("fail");
