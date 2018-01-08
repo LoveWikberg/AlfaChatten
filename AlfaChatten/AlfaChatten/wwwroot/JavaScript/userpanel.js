@@ -86,6 +86,17 @@
         removeUser();
     });
 
+    $('#sendPrivateMassage').click(function () {
+        alert("This function is still in progress and can not be used.")
+    });
+
+    $('#destroyUser').click(function () {
+        var user = $('#cardUserName').text();
+        var deleteUser = confirm(user + " will be deleted permanently.")
+        if (deleteUser)
+            adminRemoveUser({ userName: user });
+    });
+
     //var lastScrollTop = 0;
     //$window.scroll(function (event) {
     //    var st = $(this).scrollTop();
@@ -148,7 +159,7 @@ function editUserInterface(isLogedIn, user) {
 
         $('#editProfileContent').attr('hidden', false);
         $('#createUserForm').attr('hidden', true);
-        $('#profileTab').text("Profile"); 
+        $('#profileTab').text("Profile");
         $('#messageInput').attr('placeholder', 'Write something...')
         $('#chatFieldSet').removeAttr("disabled");
     }
@@ -301,6 +312,21 @@ function removeUser() {
         })
         .fail(function (xhr, status, error) {
             alert("fail");
+            console.log(xhr, status, error);
+        });
+}
+
+function adminRemoveUser(data) {
+    $.ajax({
+        url: "api/admin",
+        method: "DELETE",
+        data: data
+    })
+        .done(function (result) {
+            console.log(result);
+        })
+        .fail(function (xhr, status, error) {
+            alert("Only administrators are alowed to destroy other users.");
             console.log(xhr, status, error);
         });
 }

@@ -13,15 +13,24 @@ namespace AlfaChatten.Controllers
     [Authorize(Roles = "Administrator"), Route("api/admin")]
     public class AdminController : Controller
     {
-        [HttpPut, Route("user")]
+        private readonly DataManager dataManager;
+
+        public AdminController(DataManager dataManager)
+        {
+            this.dataManager = dataManager;
+        }
+
+        [HttpPut]
         async public Task<IActionResult> EditUser(ApplicationUser user)
         {
+            await dataManager.EditUser(user);
             return Ok();
         }
 
-        [HttpDelete, Route("user")]
+        [HttpDelete]
         async public Task<IActionResult> RemoveUser(string userName)
         {
+            await dataManager.RemoveUser(userName);
             return Ok();
         }
 
