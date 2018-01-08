@@ -55,6 +55,9 @@ function getAllMessages(userName) {
         })
         .fail(function (xhr, status, error) {
             console.log(xhr, status, error);
+        })
+        .always(function () {
+            $('#chatLoader').remove();
         });
 }
 
@@ -70,11 +73,12 @@ function checkMessageOrigin(chat, userName) {
 }
 
 function printMessage(chat, isOwnMessage) {
+    var html = ""
     if (isOwnMessage) {
-        var html = '<div><p class="chatBubble blue">' + chat.message + '<b> - you</b></p>';
+        html += '<div><p class="chatBubble blue">' + chat.message + '<b> - you</b></p>';
     }
     else {
-        var html = '<div><p class="chatBubble gray">' + chat.message + '<b> - ' + chat.user + '</b></p>';
+        html += '<div><p class="chatBubble gray">' + chat.message + '<b> - ' + chat.user + '</b></p>';
     }
     html += '</div>';
     $('.chatContent').append(html);
