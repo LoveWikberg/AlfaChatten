@@ -26,8 +26,6 @@
                     <fieldset>
                         <input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">
                         <button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>
-                        &nbsp;
-                        <button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>
                     </fieldset>
                 </div>
             </div>
@@ -49,7 +47,7 @@
         <div class="row justify-content-md-center">
             <div class="col-md-6 chatContainer">
                 <div class="chatContent">
-
+                    <span id="chatLoader" style="margin-left:45%;margin-top:40%;" class="fa fa-spinner fa-pulse fa-3x fa-fw"></span>
                 </div>
                 <hr />
                 <form id="chatForm" class="chatInput">
@@ -147,7 +145,10 @@
                             <div class="card-block">
                                 <h4 id="cardUserName" class="card-title"></h4>
                                 <p class="card-text"><i id="cardQuote"></i></p>
-                                <button class="btn btn-outline-primary">Send message</button>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button class="btn btn-outline-primary" id="sendPrivateMassage">Send message</button>
+                                    <button class="btn btn-outline-danger" id="destroyUser">Destroy user</button>
+                                </div>
                             </div>
                         </div>
                         <ul class="list-group" id="userSearchResult"></ul>
