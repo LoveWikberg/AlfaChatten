@@ -1,19 +1,18 @@
-﻿$("#btnSpellCheck").click(function () {
-    
-    var input = $("#messageInput").val();
+﻿var key = "6803cc0563d344a9a21f3fa5c968dac5";
+var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
+var correctSpeltWord = $("#correctSpeltWord");
+var wordArray = [];
 
-    bingSpellCheck(input);
-    
+$('#messageInput').keypress(function (e) {
+    if (e.which == 13) {
+        var input = $("#messageInput").val();
+        bingSpellCheck(input);
+    }
 });
-
-
 
 function bingSpellCheck(query) {
 
-    var key = "6803cc0563d344a9a21f3fa5c968dac5";
-    var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
     var request = new XMLHttpRequest();
-
     try {
         request.open("GET", endpoint + "?mode=proof&mkt=en-US&text=" + encodeURIComponent(query));
     }
@@ -29,7 +28,7 @@ function bingSpellCheck(query) {
             getSpellCheckedWord(JSON.parse(this.responseText));
         }
         else {
-            alert("Subscription key to old, or used");
+            alert("Subscription key to old, or used too many times.");
         }
     });
 
@@ -40,30 +39,21 @@ function bingSpellCheck(query) {
 
 function getSpellCheckedWord(jsonResult) {                                              //Get word from api
 
+    wordArray = [];
+
     var words = jsonResult.flaggedTokens;
-    var wordArray = [];
 
     $.each(words, function (index, result) {
         wordArray.push(result.suggestions[0].suggestion);
     });
 
     console.log(wordArray);
+    printCorrectSpeltWord(wordArray);
 }
 
-
-
-
-function getWordAt(word, markerPosition) {                                          //Get word at marker position
-
-    word = String(word);
-    markerPosition = Number(markerPosition);
-
-    var left = word.slice(0, markerPosition + 1).search(/\S+$/),
-        right = word.slice(markerPosition).search(/\s/);
-
-    if (right < 0) {
-        return word.slice(left);
+function printCorrectSpeltWord(wordArray) {
+    correctSpeltWord.empty();
+    for (var i = 0; i < wordArray.length; i++) {
+        correctSpeltWord.append($("<li>").text(wordArray[i]));
     }
-
-    return word.slice(left, right + markerPosition);
 }
