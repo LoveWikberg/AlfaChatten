@@ -65,7 +65,7 @@ function signOut() {
         url: "api/user/signOut",
         method: "POST"
     })
-        .done(function () {
+        .done(function (result) {
             location.reload();
             //editUserInterface(false, " ");
         })
