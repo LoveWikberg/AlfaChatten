@@ -5,6 +5,7 @@
     <link href="../Css/Chat.css" rel="stylesheet" />
     <link href="Css/SideNav.css" rel="stylesheet" />
     <link href="../Css/userPanel.css" rel="stylesheet" />
+    <link href="Css/UserList.css" rel="stylesheet" />
     <link href="../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -14,35 +15,35 @@
 </head>
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-toggleable-md navbar-light bg-faded" id="navbar">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">Alfachatten</a>
-            <span id="hideNavbar" class="navbar-text fa fa-arrow-up"></span>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto"></ul>
-                <div id="logedinInOrOut" class="form-inline my-2 my-lg-0 faded form-group">
-                    <fieldset>
-                        <input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">
-                        <button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>
-                    </fieldset>
+        <div id="topnav">
+            <nav class="navbar navbar-toggleable-md navbar-light bg-faded" id="navbar">
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="#">Alfachatten</a>
+                <span id="hideNavbar" class="navbar-text fa fa-arrow-up"></span>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <div id="logedinInOrOut" class="form-inline my-2 my-lg-0 faded form-group">
+                        <fieldset>
+                            <input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">
+                            <button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>
+                        </fieldset>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
 
         <!--This is for side off-canvas navbar-->
-        <!--<div id="mySidenav" class="sidenav">
+        <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <div id="logedinInOrOut" class="faded form-group">
+            <div id="logedinInOrOutSideNav" class="form-group">
                 <fieldset>
-                    <input class="form-control " type="text" placeholder="User name" id="userName">
-                    <button class="btn btn-success " id="signIn">Sign in</button>
-                    &nbsp;
-                    <button class="btn btn-primary " id="createAccount">Create account</button>
+                    <input class="form-control " type="text" placeholder="User name" id="userNameSideNav">
+                    <button class="btn btn-success " id="signInSideNav">Sign in</button>
                 </fieldset>
             </div>
-        </div>-->
+        </div>
 
         <div class="row justify-content-md-center">
             <div class="col-md-6 chatContainer">
@@ -67,7 +68,7 @@
                 <input type="button" id="sendMessage" value="Send" />
                 <ul id="discussion"></ul>-->
             </div>
-            <div class="col-md-6 userPanelContainer">
+            <div class="col-md-4 userPanelContainer">
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
@@ -154,6 +155,10 @@
                         <ul class="list-group" id="userSearchResult"></ul>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-2" id="userListContainer">
+                <h4 id="userListHeader">All users:</h4>
+                <ul id="usersOnlineList"></ul>
             </div>
         </div>
     </div>

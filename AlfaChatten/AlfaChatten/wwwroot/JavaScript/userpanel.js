@@ -1,14 +1,20 @@
 ﻿$(function () {
     checkIfClientIsAuthorized();
 
-    fixNavbar();
+    getAllUsers();
 
     // Use this for auto correct in chat.
     $('#NonExistingMadeForLater').click(function () {
         var msg = $(this).val();
         var test = $(this)[0].selectionStart;
         var word = getWordAt(msg, test);
-        alert(word);
+    });
+
+    $(document).on("click", "#usersOnlineList li", function (e) {
+        e.preventDefault();
+        var name = $(this).text();
+        getUserInfo({ userName: name });
+        $('a[href="#users"]').tab('show');
     });
 
     $('#testauth').click(function () {
@@ -40,7 +46,7 @@
 
     $('#profileForm').on("submit", function (event) {
         event.preventDefault();
-        var html = '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i>'
+        var html = '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i>';
         $('#editFormSubmitBtn').html(html);
         var formData = $(this).serialize();
         editUserProfile(formData);
@@ -56,9 +62,6 @@
         createUser({ userName: name });
     });
 
-
-    // LOVE FIXA DET HÄR
-    // PROFILBILD SKA BARA GÅ ATT ÄNDRA EFTER ATT MAN HAR SKAPAT ANVÄNDARE
     $('#createUserForm').on("submit", function (event) {
         event.preventDefault();
         var formData = $(this).serializeArray();
@@ -87,12 +90,12 @@
     });
 
     $('#sendPrivateMassage').click(function () {
-        alert("This function is still in progress and can not be used.")
+        alert("This function is still in progress and can not be used.");
     });
 
     $('#destroyUser').click(function () {
         var user = $('#cardUserName').text();
-        var deleteUser = confirm(user + " will be deleted permanently.")
+        var deleteUser = confirm(user + " will be deleted permanently.");
         if (deleteUser)
             adminRemoveUser({ userName: user });
     });
@@ -147,36 +150,49 @@ function checkIfClientIsAuthorized() {
             $('#logedinInOrOut').removeClass("faded");
             console.log(xhe, status, error);
             getAllMessages("");
-        })
+        });
 }
 
 function editUserInterface(isLogedIn, user) {
-    var html = "";
+    var topNavhtml = "";
+    var sideNavhtml = "";
     if (isLogedIn) {
-        html += '<span class="navbar-text">Logged in as: ' + user + '</span>';
-        html += '&nbsp;';
-        html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
-
+        topNavhtml = topNavBarHtml(user);
+        sideNavhtml = sideNavBarHtml(user);
         $('#editProfileContent').attr('hidden', false);
         $('#createUserForm').attr('hidden', true);
         $('#profileTab').text("Profile");
-        $('#messageInput').attr('placeholder', 'Write something...')
+        $('#messageInput').attr('placeholder', 'Write something...');
         $('#chatFieldSet').removeAttr("disabled");
     }
     else {
-        html += '<input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">';
-        html += '<button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>';
-        html += '&nbsp;';
-        html += '<button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>';
-        $('#messageInput').attr('placeholder', 'Sign in to chat')
+        topNavhtml += '<input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">';
+        topNavhtml += '<button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>';
+        topNavhtml += '&nbsp;';
+        topNavhtml += '<button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>';
+        $('#messageInput').attr('placeholder', 'Sign in to chat');
         $('#chatFieldSet').attr("disabled", true);
     }
-    $('#logedinInOrOut').html(html);
-
+    $('#logedinInOrOut').html(topNavhtml);
+    $('#logedinInOrOutSideNav').html(sideNavhtml);
 }
 
-// TODO
-// Make some data editable
+function topNavBarHtml(user) {
+    var html = "";
+    html += '<span class="navbar-text">Logged in as: ' + user + '</span>';
+    html += '&nbsp;';
+    html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOut">Sign out</button>';
+    return html;
+}
+
+function sideNavBarHtml(user) {
+    var html = "";
+    html += '<span class="navbar-text">Logged in as: ' + user + '</span>';
+    html += '&nbsp;';
+    html += '<button class="btn btn-outline-danger my-2 my-sm-0" id="signOutSideNav">Sign out</button>';
+    return html;
+}
+
 function getLoggedInUsersInfo(data) {
     $.ajax({
         url: "api/user/loggedInUsersInfo",
@@ -260,7 +276,7 @@ function getHtmlForSearchResult(user) {
 function generateProfileCard(user) {
     $('#userSearchResult').empty();
     if (user.image === null)
-        $('#profileCard img').attr('src', 'Images/ProfileImages/Default.png')
+        $('#profileCard img').attr('src', 'Images/ProfileImages/Default.png');
     else
         $('#profileCard img').attr('src', 'Images/ProfileImages/' + user.image + '');
     $('#cardUserName').text(user.userName);
@@ -284,6 +300,35 @@ function createUser(data) {
         });
 }
 
+function getAllUsers() {
+    $.ajax({
+        url: "api/user/getAllUsers",
+        method: "GET"
+    })
+        .done(function (allUsers) {
+            var html = "";
+            allUsers.forEach(function (user) {
+                html += displayUser(user);
+            });
+            $("#usersOnlineList").html(html);
+        })
+        .fail(function (xhr, status, error) {
+            console.log(xhr, status, error);
+        });
+}
+
+function displayUser(user) {
+    console.log(user.isSignedIn);
+    var html = "";
+    if (user.isSignedIn === true) {
+        html = '<li class="list-item" style="color:green;">' + user.userName + '</li>';
+    }
+    else {
+        html = '<li class="list-item">' + user.userName + '</li>';
+    }
+    return html;
+}
+
 function editProfileImageAjax(data) {
     $.ajax({
         url: "api/user/image",
@@ -304,7 +349,7 @@ function editProfileImageAjax(data) {
 function removeUser() {
     $.ajax({
         url: "api/user",
-        method: "DELETE",
+        method: "DELETE"
     })
         .done(function (result) {
             console.log(result);

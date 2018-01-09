@@ -4,8 +4,16 @@
         signIn({ userName: name });
     });
 
+    $(document).on("click", "#signInSideNav", function () {
+        var name = $('#userNameSideNav').val();
+        signIn({ userName: name });
+    });
 
     $(document).on("click", "#signOut", function () {
+        signOut();
+    });
+
+    $(document).on("click", "#signOutSideNav", function () {
         signOut();
     });
 
@@ -14,32 +22,32 @@
         $('#userName').removeClass('form-control-danger');
     });
 
-    $window.resize(function () {
-        fixNavbar();
-    });
+    //$window.resize(function () {
+    //    fixNavbar();
+    //});
 
     $('#hideNavbar').click(function () {
-        $('#navbar').fadeOut();
+        //$('#navbar').fadeOut();
     });
 
     $('#showNav').click(function () {
-        //openNav();
-        $('#navbar').fadeIn();
+        openNav();
+        //$('#navbar').fadeIn();
     });
 
 });
 
 var $window = $(window);
 
-function fixNavbar() {
-    if ($window.width() <= 991 && !$('#navbar').hasClass('fixed-top')) {
-        $('#navbar').addClass('fixed-top');
-    }
-    else if ($window.width() > 991 && $('#navbar').hasClass('fixed-top')) {
-        $('#navbar').removeClass('fixed-top');
-        $('#navbar').show();
-    }
-}
+//function fixNavbar() {
+//    if ($window.width() <= 767 && !$('#navbar').hasClass('fixed-top')) {
+//        $('#navbar').addClass('fixed-top');
+//    }
+//    else if ($window.width() > 767 && $('#navbar').hasClass('fixed-top')) {
+//        $('#navbar').removeClass('fixed-top');
+//        $('#navbar').show();
+//    }
+//}
 
 
 function signIn(data) {
@@ -50,9 +58,6 @@ function signIn(data) {
     })
         .done(function (userName) {
             location.reload();
-            //editUserInterface(true, data.userName);
-            //getUserInfo();
-            //console.log(userName);
         })
         .fail(function (xhe, status, error) {
             validateSignIn();
@@ -67,7 +72,6 @@ function signOut() {
     })
         .done(function (result) {
             location.reload();
-            //editUserInterface(false, " ");
         })
         .fail(function (xhe, status, error) {
             alert("fail");
@@ -82,12 +86,16 @@ function validateSignIn() {
 
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginRight = "250px";
+    $('#mySidenav').css("width", "250px");
+    $('#main').css("margin-right", "250px");
+    //document.getElementById("mySidenav").style.width = "250px";
+    //document.getElementById("main").style.marginRight = "250px";
 }
 
 /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginRight = "0";
+    $('#mySidenav').css("width", "0px");
+    $('#main').css("margin-right", "0px");
+    //document.getElementById("mySidenav").style.width = "0";
+    //document.getElementById("main").style.marginRight = "0";
 }
