@@ -44,9 +44,7 @@ function GetWord(searchWord) {
 }
 
 function printFoundSynonymes(wordArray) {
-
     console.log(wordArray);
-
     for (var i = 0; i < 3; i++) {
         wordlist.append($("<li>").text(wordArray[i]));
     }

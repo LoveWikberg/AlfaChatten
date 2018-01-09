@@ -1,7 +1,11 @@
-﻿var key = "6803cc0563d344a9a21f3fa5c968dac5";
-var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
+﻿//var key = "6803cc0563d344a9a21f3fa5c968dac5";
+//var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
 var correctSpeltWord = $("#correctSpeltWord");
 var wordArray = [];
+
+var key = "6803cc0563d344a9a21f3fa5c968dac5";
+var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
+var lastPartURL = "?mode=proof&mkt=en-US&text=";
 
 $('#messageInput').keypress(function (e) {
     if (e.which == 13) {
@@ -11,41 +15,22 @@ $('#messageInput').keypress(function (e) {
 });
 
 function bingSpellCheck(query) {
-    var request = new XMLHttpRequest();
-    try {
-        request.open("GET", endpoint + "?mode=proof&mkt=en-US&text=" + encodeURIComponent(query));
-    }
-    catch (e) {
-        renderErrorMessage("Bad request");
-        return false;
-    }
-    request.setRequestHeader("Ocp-Apim-Subscription-Key", key);
-
-    request.addEventListener("load", function () {
-        if (this.status === 200) {
-            getSpellCheckedWord(JSON.parse(this.responseText));}
-        else {
-            alert("Subscription key to old, or used too many times.");
+    wordArray = [];
+    $.ajax({
+        url: endpoint + lastPartURL + query,
+        headers: { 'Ocp-Apim-Subscription-Key': key },
+        success: function (data) {
+            $.each(data.flaggedTokens, function (index, result) {
+                wordArray.push(result.suggestions[0].suggestion);
+            });
+            printCorrectSpeltWord(wordArray);
         }
     });
-    request.send();
-    return false;
-}
-
-function getSpellCheckedWord(jsonResult) {
-
-    wordArray = [];
-    var words = jsonResult.flaggedTokens;
-    $.each(words, function (index, result) {
-        wordArray.push(result.suggestions[0].suggestion);
-    });
-    printCorrectSpeltWord(wordArray);
 }
 
 function printCorrectSpeltWord(wordArray) {
-
     console.log(wordArray);
-    correctSpeltWord.empty(); 7
+    correctSpeltWord.empty();
     for (var i = 0; i < wordArray.length; i++) {
         correctSpeltWord.append($("<li>").text(wordArray[i]));
     }
