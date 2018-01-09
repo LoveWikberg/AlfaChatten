@@ -11,8 +11,8 @@ using System;
 namespace AlfaChatten.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171223110022_removedProps")]
-    partial class removedProps
+    [Migration("20180103202206_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,8 @@ namespace AlfaChatten.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("ChatName");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -35,6 +37,10 @@ namespace AlfaChatten.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -51,6 +57,8 @@ namespace AlfaChatten.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("Quote");
 
                     b.Property<string>("SecurityStamp");
 
@@ -70,6 +78,22 @@ namespace AlfaChatten.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("AlfaChatten.Data.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Message");
+
+                    b.Property<DateTime>("TimeSent");
+
+                    b.Property<string>("User");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chat");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

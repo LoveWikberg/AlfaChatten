@@ -11,8 +11,8 @@ using System;
 namespace AlfaChatten.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180102121544_MessageDb")]
-    partial class MessageDb
+    [Migration("20180108193154_firstDaniel")]
+    partial class firstDaniel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,12 @@ namespace AlfaChatten.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<bool>("IsSignedIn");
+
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -76,18 +82,20 @@ namespace AlfaChatten.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("AlfaChatten.Data.ChatMessage", b =>
+            modelBuilder.Entity("AlfaChatten.Data.Chat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Message");
 
+                    b.Property<DateTime>("TimeSent");
+
                     b.Property<string>("User");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChatMessage");
+                    b.ToTable("Chat");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
