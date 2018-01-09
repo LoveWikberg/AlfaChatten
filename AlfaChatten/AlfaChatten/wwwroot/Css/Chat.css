@@ -97,11 +97,12 @@
     min-width: 30px;
     padding: 4px 3px 0 3px;
     text-align: center;
+    z-index:3;
 }
 
 
 @media screen and (min-width: 769px) {
-    #hideNavbar, #showNav, #toogleChatOrUserPanel, .sidenav {
+    #hideNavbar, #showNav, #toogleChatOrUserPanel {
         visibility: hidden;
     }
 }
