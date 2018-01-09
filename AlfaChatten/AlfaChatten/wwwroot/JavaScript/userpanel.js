@@ -318,13 +318,19 @@ function getAllUsers() {
 }
 
 function displayUser(user) {
-    console.log(user.isSignedIn);
     var html = "";
+    var userImage = ""; 
+        if (user.image === null) {
+            userImage = 'Images/ProfileImages/Default.png';
+        } else {
+            userImage = '<img class="userListProfilePicture" id="#test" src="Images/ProfileImages/' + user.image + '"/>'; 
+        }
+
     if (user.isSignedIn === true) {
-        html = '<li class="list-item" style="color:green;">' + user.userName + '</li>';
+        html = '<li class="user-list-item">' + userImage + "<b>" + user.userName + "</b>" + '<div class="isOnlineDot"></div></li>';
     }
     else {
-        html = '<li class="list-item">' + user.userName + '</li>';
+        html = '<li class="user-list-item">' + userImage + user.userName + '</li>';
     }
     return html;
 }
