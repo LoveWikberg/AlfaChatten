@@ -1,6 +1,21 @@
-﻿#userListContainer{
+﻿#userListContainer::-webkit-scrollbar {
+    width: 0.3em;
+}
+
+#userListContainer::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#userListContainer::-webkit-scrollbar-thumb {
+    background-color: cornflowerblue;
+    outline: 1px solid slategrey;
+    border-radius: 10px;
+}
+
+#userListContainer {
     border: solid 1px cornflowerblue;
     border-radius: 5px;
+    overflow: auto;
 }
 
 #userListHeader {
@@ -12,3 +27,30 @@
 #usersOnlineList{
     list-style-type: none;
 }
+
+.user-list-item{
+    font-size: 15px;
+}
+
+.userListProfilePicture {
+    width: 70px;
+    height: 70px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    padding: 5px;
+    margin-right: 5%;
+}
+
+.isOnlineDot {
+    width: 10px;
+    height: 10px;
+    background-color: limegreen;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    float: right;
+    margin-top: 10%;
+    margin-right: 15%
+}
+
+

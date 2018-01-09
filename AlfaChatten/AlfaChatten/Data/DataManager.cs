@@ -178,6 +178,12 @@ namespace AlfaChatten.Data
         public ApplicationUser[] GetAllUsers()
         {
             var allUsers = userManager.Users.ToArray();
+
+            for (int i = 0; i < allUsers.Length; i++)
+            {
+                allUsers[i].Image = GetFileNameAndExtension(allUsers[i].Id, @"Images\ProfileImages");
+            }
+
             return allUsers;
         }
     }
