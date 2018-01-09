@@ -27,7 +27,7 @@ namespace AlfaChatten.Data
             this.context = context;
             this.hostingEnvironment = hostingEnvironment;
             context.Database.EnsureCreated();
-            roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
+            //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
 
         async public Task CreateUser(ApplicationUser user)
@@ -173,6 +173,12 @@ namespace AlfaChatten.Data
                     break;
                 }
             }
+        }
+
+        public ApplicationUser[] GetAllUsers()
+        {
+            var allUsers = userManager.Users.ToArray();
+            return allUsers;
         }
     }
 }

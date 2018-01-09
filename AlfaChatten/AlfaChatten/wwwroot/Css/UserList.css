@@ -1,0 +1,14 @@
+﻿#userListContainer{
+    border: solid 1px cornflowerblue;
+    border-radius: 5px;
+}
+
+#userListHeader {
+    padding: 5%;
+    border-bottom: 1px solid cornflowerblue;
+    text-align: center;
+}
+
+#usersOnlineList{
+    list-style-type: none;
+}
