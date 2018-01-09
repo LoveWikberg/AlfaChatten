@@ -11,7 +11,6 @@ $('#messageInput').keypress(function (e) {
 });
 
 function bingSpellCheck(query) {
-
     var request = new XMLHttpRequest();
     try {
         request.open("GET", endpoint + "?mode=proof&mkt=en-US&text=" + encodeURIComponent(query));
@@ -20,39 +19,33 @@ function bingSpellCheck(query) {
         renderErrorMessage("Bad request");
         return false;
     }
-
     request.setRequestHeader("Ocp-Apim-Subscription-Key", key);
 
     request.addEventListener("load", function () {
         if (this.status === 200) {
-            getSpellCheckedWord(JSON.parse(this.responseText));
-        }
+            getSpellCheckedWord(JSON.parse(this.responseText));}
         else {
             alert("Subscription key to old, or used too many times.");
         }
     });
-
     request.send();
     return false;
 }
 
-
-function getSpellCheckedWord(jsonResult) {                                              //Get word from api
+function getSpellCheckedWord(jsonResult) {
 
     wordArray = [];
-
     var words = jsonResult.flaggedTokens;
-
     $.each(words, function (index, result) {
         wordArray.push(result.suggestions[0].suggestion);
     });
-
-    console.log(wordArray);
     printCorrectSpeltWord(wordArray);
 }
 
 function printCorrectSpeltWord(wordArray) {
-    correctSpeltWord.empty();
+
+    console.log(wordArray);
+    correctSpeltWord.empty(); 7
     for (var i = 0; i < wordArray.length; i++) {
         correctSpeltWord.append($("<li>").text(wordArray[i]));
     }
