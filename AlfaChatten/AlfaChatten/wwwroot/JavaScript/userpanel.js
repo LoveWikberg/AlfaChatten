@@ -249,7 +249,7 @@ function generateProfileCard(user) {
     if (user.image === null)
         $('#profileCard img').attr('src', 'Images/ProfileImages/Default.png')
     else
-        $('#profileCard img').attr('src', 'Images/ProfileImages/' + user.image + '');
+        $('#profileCard img').attr('src', user.image + '');
     $('#cardUserName').text(user.userName);
     $('#cardQuote').text(user.quote);
     $('#profileCard').attr('hidden', false);

@@ -37,18 +37,10 @@ namespace AlfaChatten.Controllers
             var info = await _signInManager.GetExternalLoginInfoAsync();
 
             string id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
-            string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            string name = info.Principal.FindFirstValue(ClaimTypes.Name);
-            string image = $"https://graph.facebook.com/{id}/picture?type=large";
-            string dateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth);
-            string gender = info.Principal.FindFirstValue(ClaimTypes.Gender);
-            string lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
-            string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
-
 
             var newUser = new ApplicationUser
             {
-                Id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
+                Id = id,
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                 UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
                 Image = $"https://graph.facebook.com/{id}/picture?type=large",

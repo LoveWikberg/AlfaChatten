@@ -12,7 +12,7 @@ namespace AlfaChatten.Data
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public string Image { get; set; }
     }
 }

@@ -40,6 +40,7 @@ namespace AlfaChatten.Data
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
+                    Image=user.Image,
                     ChatName = $"{user.FirstName} {user.LastName}"
                 };
                 await userManager.CreateAsync(newUser);
@@ -75,7 +76,7 @@ namespace AlfaChatten.Data
         async public Task<ApplicationUser> GetUserInfo(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
-            user.Image = GetFileNameAndExtension(user.Id, @"Images\ProfileImages");
+            //user.Image = GetFileNameAndExtension(user.Id, @"Images\ProfileImages");
             return user;
         }
 
