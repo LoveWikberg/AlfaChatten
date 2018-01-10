@@ -34,6 +34,16 @@ namespace AlfaChatten
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+
+                facebookOptions.Fields.Add("birthday");
+                facebookOptions.Fields.Add("gender");
+            });
+
 
             services.AddTransient<DataManager>();
 

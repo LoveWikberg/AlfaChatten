@@ -11,8 +11,8 @@ using System;
 namespace AlfaChatten.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180103202206_first")]
-    partial class first
+    [Migration("20180110001250_firstDaniel")]
+    partial class firstDaniel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
