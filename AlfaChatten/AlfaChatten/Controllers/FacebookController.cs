@@ -34,7 +34,6 @@ namespace AlfaChatten.Controllers
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
-
             string facebookId = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var newUser = new ApplicationUser
@@ -52,8 +51,7 @@ namespace AlfaChatten.Controllers
             await Datamanager.CreateUser(newUser);
             await Datamanager.SignIn(newUser.UserName);
 
-            return Redirect(@"..\start.html");
+            return Content(@"<body onload='window.close();'></body>", "text/html");
         }
-
     }
 }
