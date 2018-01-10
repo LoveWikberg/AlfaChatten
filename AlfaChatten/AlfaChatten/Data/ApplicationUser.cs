@@ -11,8 +11,7 @@ namespace AlfaChatten.Data
         public string Quote { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-
+        
         //Facebook
         public string Image { get; set; }
         public string FacebookId { get; set; }

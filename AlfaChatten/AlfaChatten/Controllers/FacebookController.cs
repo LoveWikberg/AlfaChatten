@@ -53,5 +53,14 @@ namespace AlfaChatten.Controllers
 
             return Content(@"<body onload='window.close();'></body>", "text/html");
         }
+
+
+
+        [Route("/Error")]
+        public IActionResult Index()
+        {
+            return Content(@"<body onload='window.close();'></body>", "text/html");
+        }
+
     }
 }

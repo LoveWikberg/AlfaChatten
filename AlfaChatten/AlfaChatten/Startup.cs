@@ -67,8 +67,14 @@ namespace AlfaChatten
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error");
+
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
+
 
             app.UseStaticFiles();
 
