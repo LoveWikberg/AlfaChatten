@@ -14,7 +14,6 @@ namespace AlfaChatten.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public FacebookUser user { get; set; }
         public DataManager Datamanager { get; }
 
         public FacebookController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, DataManager datamanager)
@@ -36,16 +35,16 @@ namespace AlfaChatten.Controllers
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
 
-            string id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            string facebookId = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var newUser = new ApplicationUser
             {
-                Id = id,
+                FacebookId = facebookId,
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                 UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
-                Image = $"https://graph.facebook.com/{id}/picture?type=large",
-                //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
-                //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
+                Image = $"https://graph.facebook.com/{facebookId}/picture?type=large",
+                DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
+                Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                 FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
             };

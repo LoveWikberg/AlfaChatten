@@ -34,17 +34,11 @@ namespace AlfaChatten.Data
         {
             if (await userManager.FindByNameAsync(user.UserName) == null)
             {
-                var newUser = new ApplicationUser
-                {
-                    UserName = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Image=user.Image,
-                    ChatName = $"{user.FirstName} {user.LastName}"
-                };
-                await userManager.CreateAsync(newUser);
-                await signInManager.SignInAsync(newUser, false);
+
+                user.ChatName = $"{user.FirstName} {user.LastName}";
+
+                await userManager.CreateAsync(user);
+                await signInManager.SignInAsync(user, false);
             }
             else
                 await SignIn(user.UserName);
