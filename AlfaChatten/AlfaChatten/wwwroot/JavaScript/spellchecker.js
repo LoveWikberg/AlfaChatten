@@ -1,6 +1,4 @@
-﻿//var key = "6803cc0563d344a9a21f3fa5c968dac5";
-//var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
-var correctSpeltWord = $("#correctSpeltWord");
+﻿var correctSpeltWord = $("#correctSpeltWord");
 var wordArray = [];
 
 var key = "6803cc0563d344a9a21f3fa5c968dac5";

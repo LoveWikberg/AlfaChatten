@@ -1,5 +1,5 @@
 ﻿var apiAPI = "707f29905464f3ff07a88f60a3ebd677";
-var firstPart = 'http://words.bighugelabs.com/api/2/';
+var firstPart = 'https://words.bighugelabs.com/api/2/';
 var format = '/json';
 var timer;
 var wordlist = $("#wordlist");
