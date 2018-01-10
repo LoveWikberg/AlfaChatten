@@ -287,4 +287,3 @@ function editProfileImageAjax(data) {
             console.log(xhr, status, error);
         });
 }
-

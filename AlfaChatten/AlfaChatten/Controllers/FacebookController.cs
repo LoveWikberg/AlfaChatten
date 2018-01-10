@@ -48,14 +48,19 @@ namespace AlfaChatten.Controllers
 
             var newUser = new ApplicationUser
             {
-                UserName = $"{firstName}{lastName}",
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                Image=image
+                Id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                Image = $"https://graph.facebook.com/{id}/picture?type=large",
+                //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
+                //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
+                LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
+                FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
             };
 
             await Datamanager.CreateUser(newUser);
+            await Datamanager.SignIn(newUser.UserName);
+
             return Redirect(@"..\start.html");
         }
 

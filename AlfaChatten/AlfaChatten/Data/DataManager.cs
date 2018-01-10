@@ -36,17 +36,17 @@ namespace AlfaChatten.Data
             {
                 var newUser = new ApplicationUser
                 {
-                    UserName = $"{user.FirstName}{user.LastName}",
+                    UserName = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Email = user.Email
-                    //ChatName = user.UserName,
+                    Email = user.Email,
+                    ChatName = $"{user.FirstName} {user.LastName}"
                 };
                 await userManager.CreateAsync(newUser);
                 await signInManager.SignInAsync(newUser, false);
             }
             else
-                throw new Exception("User name is taken");
+                await SignIn(user.UserName);
         }
 
         async public Task RemoveUser(string userName)
