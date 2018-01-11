@@ -1,52 +1,58 @@
-﻿var key = "6803cc0563d344a9a21f3fa5c968dac5";
-var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
-var correctSpeltWord = $("#correctSpeltWord");
-var wordArray = [];
+﻿$(function () {
 
-$('#messageInput').keypress(function (e) {
-    if (e.which == 13) {
-        var input = $("#messageInput").val();
-        bingSpellCheck(input);
-    }
+    $('#messageInput').dblclick(function () {
+        var msg = $(this).val();
+        var test = $(this)[0].selectionStart;
+        var word = getWordAt(msg, test);
+        bingSpellCheck(word);
+    });
+
 });
 
-function bingSpellCheck(query) {
-    var request = new XMLHttpRequest();
-    try {
-        request.open("GET", endpoint + "?mode=proof&mkt=en-US&text=" + encodeURIComponent(query));
-    }
-    catch (e) {
-        renderErrorMessage("Bad request");
-        return false;
-    }
-    request.setRequestHeader("Ocp-Apim-Subscription-Key", key);
+var key = "6803cc0563d344a9a21f3fa5c968dac5";
+var endpoint = "https://api.cognitive.microsoft.com/bing/v7.0/spellcheck/";
+var lastPartURL = "?mode=proof&mkt=en-US&text=";
 
-    request.addEventListener("load", function () {
-        if (this.status === 200) {
-            getSpellCheckedWord(JSON.parse(this.responseText));}
-        else {
-            alert("Subscription key to old, or used too many times.");
+function bingSpellCheck(query) {
+    $.ajax({
+        url: endpoint + lastPartURL + query,
+        headers: { 'Ocp-Apim-Subscription-Key': key },
+        success: function (data) {
+            if (data.flaggedTokens.length === 0)
+                $('#messageInput').addClass('redGlow').one('webkitAnimationEnd...', function () { $(this).removeClass('redGlow'); });
+            else {
+                $('#messageInput').addClass('greenGlow').one('webkitAnimationEnd...', function () { $(this).removeClass('greenGlow'); });
+                var correctWord = data.flaggedTokens[0].suggestions[0].suggestion;
+                changeWord(query, correctWord);
+            }
+        },
+        fail: function (xhr, status, error) {
+            console.log(xhe, status, error);
         }
     });
-    request.send();
-    return false;
 }
 
-function getSpellCheckedWord(jsonResult) {
-
-    wordArray = [];
-    var words = jsonResult.flaggedTokens;
-    $.each(words, function (index, result) {
-        wordArray.push(result.suggestions[0].suggestion);
-    });
-    printCorrectSpeltWord(wordArray);
+function changeWord(inCorrectWord, correctWord) {
+    var msg = $('#messageInput').val();
+    var regex = new RegExp(inCorrectWord, "gi");
+    msg = msg.replace(regex, correctWord);
+    $('#messageInput').val(msg);
 }
 
-function printCorrectSpeltWord(wordArray) {
+function getWordAt(str, pos) {
 
-    console.log(wordArray);
-    correctSpeltWord.empty(); 7
-    for (var i = 0; i < wordArray.length; i++) {
-        correctSpeltWord.append($("<li>").text(wordArray[i]));
+    str = String(str);
+    pos = Number(pos);
+    //pos = Number(pos) >>> 0;
+
+    var left = str.slice(0, pos + 1).search(/\S+$/),
+        right = str.slice(pos).search(/\s/);
+
+    if (right < 0) {
+        return str.slice(left);
     }
+
+    return str.slice(left, right + pos);
+
 }
+
