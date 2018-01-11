@@ -1,14 +1,7 @@
 ﻿$(function () {
     checkIfClientIsAuthorized();
 
-    getAllUsers();
-
-    // Use this for auto correct in chat.
-    $('#NonExistingMadeForLater').click(function () {
-        var msg = $(this).val();
-        var test = $(this)[0].selectionStart;
-        var word = getWordAt(msg, test);
-    });
+    changeUserPanelHeader();
 
     $(document).on("click", "#usersOnlineList li", function (e) {
         e.preventDefault();
@@ -112,28 +105,11 @@
     //    }
     //    lastScrollTop = st;
     //});
+
+    $("#profileImage").change(function () {
+        readURL(this);
+    });
 });
-
-function getWordAt(str, pos) {
-
-    // Perform type conversions.
-    str = String(str);
-    pos = Number(pos);
-    //pos = Number(pos) >>> 0;
-
-    // Search for the word's beginning and end.
-    var left = str.slice(0, pos + 1).search(/\S+$/),
-        right = str.slice(pos).search(/\s/);
-
-    // The last word in the string is a special case.
-    if (right < 0) {
-        return str.slice(left);
-    }
-
-    // Return the word, using the located bounds to extract it from the string.
-    return str.slice(left, right + pos);
-
-}
 
 function checkIfClientIsAuthorized() {
     $.ajax({
@@ -145,6 +121,7 @@ function checkIfClientIsAuthorized() {
             editUserInterface(true, userName);
             getLoggedInUsersInfo();
             getAllMessages(userName);
+            changeUserPanelHeader();
         })
         .fail(function (xhe, status, error) {
             $('#logedinInOrOut').removeClass("faded");
@@ -172,9 +149,12 @@ function editUserInterface(isLogedIn, user) {
         topNavhtml += '<button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>';
         $('#messageInput').attr('placeholder', 'Sign in to chat');
         $('#chatFieldSet').attr("disabled", true);
+        changeUserPanelHeader();
     }
     $('#logedinInOrOut').html(topNavhtml);
     $('#logedinInOrOutSideNav').html(sideNavhtml);
+
+    changeUserPanelHeader();
 }
 
 function topNavBarHtml(user) {
@@ -228,6 +208,13 @@ function populateProfileForm(user) {
     $('#formEmail').val(user.email);
     $('#formChatName').val(user.chatName);
     $('#formQuote').val(user.quote);
+
+    if (user.image === null)
+        $('#userImagePreview').attr("src", "Images/ProfileImages/Default.png")
+    else
+        $('#userImagePreview').attr("src", "Images/ProfileImages/" + user.image)
+
+
 }
 
 function editUserProfile(formData) {
@@ -238,6 +225,7 @@ function editUserProfile(formData) {
     })
         .done(function (result) {
             console.log(result);
+            location.reload(true);
         })
 
         .fail(function (xhe, status, error) {
@@ -299,46 +287,6 @@ function createUser(data) {
         });
 }
 
-function getAllUsers() {
-    $.ajax({
-        url: "api/user/getAllUsers",
-        method: "GET"
-    })
-        .done(function (allUsers) {
-            var html = "";
-            allUsers.forEach(function (user) {
-                html += displayUser(user);
-            });
-            $("#usersOnlineList").html(html);
-        })
-        .fail(function (xhr, status, error) {
-            console.log(xhr, status, error);
-        });
-}
-
-function displayUser(user) {
-    var html = "";
-    var userImage = checkIfUserImageIsUploaded(user);
-
-    if (user.isSignedIn === true) {
-        html = '<div class="user-wrapper"><li class="user-list-item">' + userImage + "<b>" + user.userName + "</b>" + '<div class="isOnlineDot"></div></li></div>';
-    } else {
-        html = '<div class="user-wrapper"><li class="user-list-item">' + userImage + user.userName + '</li></div>';
-    }
-    return html;
-}
-
-function checkIfUserImageIsUploaded(user) {
-    var userImage = "";
-
-    if (user.image === null) {
-        userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/Default.png"/>'
-    } else {
-        userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/' + user.image + '"/>';
-    }
-    return userImage
-}
-
 function editProfileImageAjax(data) {
     $.ajax({
         url: "api/user/image",
@@ -379,6 +327,7 @@ function adminRemoveUser(data) {
     })
         .done(function (result) {
             console.log(result);
+            location.reload(true);
         })
         .fail(function (xhr, status, error) {
             alert("Only administrators are alowed to destroy other users.");
@@ -386,3 +335,21 @@ function adminRemoveUser(data) {
         });
 }
 
+function changeUserPanelHeader() {
+    var profileTabValue = $('#profileTab').text();
+    var html = '<h4>' + profileTabValue + '</h4>';
+
+    $('#profileHeader').html(html);
+}
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#userImagePreview').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}

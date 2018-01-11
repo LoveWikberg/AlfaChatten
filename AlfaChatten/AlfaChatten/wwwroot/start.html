@@ -6,6 +6,7 @@
     <link href="Css/SideNav.css" rel="stylesheet" />
     <link href="../Css/userPanel.css" rel="stylesheet" />
     <link href="Css/UserList.css" rel="stylesheet" />
+    <link href="Css/SpellCheck.css" rel="stylesheet" />
     <link href="../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -60,16 +61,14 @@
                                     <i class="fa fa-arrow-circle-o-right fa-3x" style="border:none"></i>
                                 </button>
                             </span>
-                            <!--<input type="submit" value="send" />-->
                         </div>
                     </fieldset>
                 </form>
-                <!--<input type="text" id="message" />
-                <input type="button" id="sendMessage" value="Send" />
-                <ul id="discussion"></ul>-->
             </div>
-            <div class="col-md-3 userPanelContainer">
+            <div class="col-md-4" id="userPanelContainer">
+                <div id="profileHeader">
 
+                </div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
@@ -106,15 +105,30 @@
                         <div id="editProfileContent" hidden>
                             <form id="editProfileImageForm" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="createFile">File input</label>
-                                    <input type="file" class="form-control-file" id="profileImage">
+                                    <div class="col-md-6 center">
+                                        <div class="row">
+                                            <img id="userImagePreview" class="imagePreview" src="#" alt="Your uploaded picture." />
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-8">
+                                                <label class="fileContainer">
+                                                    <a href="#" style="text-align: center;">
+                                                        <i class="fa fa-upload" id="uploadIcon" aria-hidden="true"></i> Choose Image
+                                                    </a>
+                                                    <input type="file" class="form-control-file" id="profileImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button type="submit" class="btn userPanelBtn">Save image</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                             <form id="profileForm">
                                 <div class="form-group">
-                                    <label for="formUserName">User name</label>
-                                    <input id="formUserName" name="userName" class="form-control" />
+                                    <label for="formUserName">Username</label>
+                                    <input id="formUserName" name="userName" class="form-control" readonly />
                                 </div>
                                 <div class="form-group">
                                     <label for="formEmail">Email</label>
@@ -131,7 +145,7 @@
                                 <a href="#" id="deleteUser"><i class="fa fa-times" aria-hidden="true"></i> Delete user</a>
                                 <br />
                                 <br />
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn userPanelBtn">Save changes</button>
                             </form>
                         </div>
                     </div>
@@ -156,13 +170,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3" id="userListContainer">
+            <div class="col-md-2" id="userListContainer">
                 <div id="userListHeader">
                     <h4>All users</h4>
                 </div>
-                <ul id="usersOnlineList">
-
-                </ul>
+                <ul id="usersOnlineList"></ul>
             </div>
         </div>
     </div>
@@ -176,5 +188,7 @@
     <script src="../JavaScript/userpanel.js"></script>
     <script src="../JavaScript/signalR.js"></script>
     <script src="../JavaScript/chat.js"></script>
+    <script src="JavaScript/userList.js"></script>
+    <script src="JavaScript/spellchecker.js"></script>
 </body>
 </html>
