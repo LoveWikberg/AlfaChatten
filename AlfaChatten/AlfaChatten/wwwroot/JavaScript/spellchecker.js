@@ -1,10 +1,21 @@
 ﻿$(function () {
 
-    $('#messageInput').dblclick(function () {
-        var msg = $(this).val();
-        var test = $(this)[0].selectionStart;
-        var word = getWordAt(msg, test);
-        bingSpellCheck(word);
+    var touchtime = 0;
+    $("#messageInput").on("click", function () {
+        if (touchtime === 0) {
+            touchtime = new Date().getTime();
+        } else {
+            if (((new Date().getTime()) - touchtime) < 800) {
+                var msg = $(this).val();
+                if (msg.length !== 0) {
+                    var test = $(this)[0].selectionStart;
+                    var word = getWordAt(msg, test);
+                    bingSpellCheck(word);
+                }
+            } else {
+                touchtime = new Date().getTime();
+            }
+        }
     });
 
 });
