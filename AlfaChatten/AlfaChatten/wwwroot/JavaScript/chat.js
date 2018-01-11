@@ -15,6 +15,15 @@ $('#chatForm').submit(function (event) {
     $('#messageInput').val("");
 });
 
+$("#messageInput").keyup(function (e) {
+    var key = e.which;
+    if (key == 13) {
+        $("#chatFormSubmitBtn").click();
+    }
+});
+
+
+
 // Följ denna länk för att lägga till en funktion som
 // spelar upp ett ljud när ett meddelande tas emot:
 // https://stackoverflow.com/questions/8489710/play-an-audio-file-using-jquery-when-a-button-is-clicked

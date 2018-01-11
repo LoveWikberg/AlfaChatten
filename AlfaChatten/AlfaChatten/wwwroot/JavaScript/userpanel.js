@@ -284,7 +284,6 @@ function generateProfileCard(user) {
     $('#profileCard').attr('hidden', false);
 }
 
-
 function createUser(data) {
     $.ajax({
         url: "api/user/create",
@@ -319,20 +318,25 @@ function getAllUsers() {
 
 function displayUser(user) {
     var html = "";
-    var userImage = ""; 
-        if (user.image === null) {
-            userImage = 'Images/ProfileImages/Default.png';
-        } else {
-            userImage = '<img class="userListProfilePicture" id="#test" src="Images/ProfileImages/' + user.image + '"/>'; 
-        }
+    var userImage = checkIfUserImageIsUploaded(user);
 
     if (user.isSignedIn === true) {
-        html = '<li class="user-list-item">' + userImage + "<b>" + user.userName + "</b>" + '<div class="isOnlineDot"></div></li>';
-    }
-    else {
-        html = '<li class="user-list-item">' + userImage + user.userName + '</li>';
+        html = '<div class="user-wrapper"><li class="user-list-item">' + userImage + "<b>" + user.userName + "</b>" + '<div class="isOnlineDot"></div></li></div>';
+    } else {
+        html = '<div class="user-wrapper"><li class="user-list-item">' + userImage + user.userName + '</li></div>';
     }
     return html;
+}
+
+function checkIfUserImageIsUploaded(user) {
+    var userImage = "";
+
+    if (user.image === null) {
+        userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/Default.png"/>'
+    } else {
+        userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/' + user.image + '"/>';
+    }
+    return userImage
 }
 
 function editProfileImageAjax(data) {

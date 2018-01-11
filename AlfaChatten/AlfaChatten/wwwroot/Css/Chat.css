@@ -47,7 +47,6 @@
 
 .chatInput {
     width: 100%;
-    height: 25%;
     /*border: solid black 2px;*/
 }
 
@@ -63,7 +62,7 @@
     border: solid 1px cornflowerblue;
     border-radius:2px;
     cursor: pointer;
-} 
+}
 
 #showNav {
     position: fixed;
@@ -80,6 +79,7 @@
     min-width: 30px;
     padding: 4px 3px 0 3px;
     text-align: center;
+    z-index: 3;
 }
 
 #toogleChatOrUserPanel {
@@ -104,6 +104,12 @@
 @media screen and (min-width: 769px) {
     #hideNavbar, #showNav, #toogleChatOrUserPanel {
         visibility: hidden;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .chatContainer {
+        height: 94vh;
     }
 }
 

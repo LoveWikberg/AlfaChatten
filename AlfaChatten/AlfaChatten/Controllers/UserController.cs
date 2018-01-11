@@ -53,7 +53,6 @@ namespace AlfaChatten.Controllers
             {
                 await dataManager.SignOut(HttpContext.User.Identity.Name);
                 await dataManager.RemoveUser(HttpContext.User.Identity.Name);
-                //await signInManager.SignOutAsync();
 
                 return Ok("User deleted.");
             }
