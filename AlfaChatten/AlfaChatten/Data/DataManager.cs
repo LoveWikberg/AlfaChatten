@@ -57,6 +57,7 @@ namespace AlfaChatten.Data
         async public Task RemoveUser(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
+            await signInManager.SignOutAsync();
             await userManager.DeleteAsync(user);
         }
 

@@ -54,7 +54,7 @@
                 <form id="chatForm" class="chatInput">
                     <fieldset id="chatFieldSet" disabled>
                         <div class="input-group">
-                            <textarea type="text" class="form-control" id="messageInput" placeholder="Sign in to chat" rows="6"></textarea>
+                            <textarea type="text" class="form-control" style="resize: none;" id="messageInput" placeholder="Sign in to chat" rows="5"></textarea>
                             <span class="input-group-btn" id="addon">
                                 <button class="btn btn-secondary" type="submit" id="chatFormSubmitBtn">
                                     <i class="fa fa-arrow-circle-o-right fa-3x" style="border:none"></i>
@@ -68,7 +68,7 @@
                 <input type="button" id="sendMessage" value="Send" />
                 <ul id="discussion"></ul>-->
             </div>
-            <div class="col-md-4 userPanelContainer">
+            <div class="col-md-3 userPanelContainer">
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
@@ -156,9 +156,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2" id="userListContainer">
-                <h4 id="userListHeader">All users:</h4>
-                <ul id="usersOnlineList"></ul>
+            <div class="col-md-3" id="userListContainer">
+                <div id="userListHeader">
+                    <h4>All users</h4>
+                </div>
+                <ul id="usersOnlineList">
+
+                </ul>
             </div>
         </div>
     </div>

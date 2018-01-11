@@ -13,23 +13,42 @@
 }
 
 #userListContainer {
-    border: solid 1px cornflowerblue;
     border-radius: 5px;
+    padding: 0;
     overflow: auto;
+    border-bottom: 1px solid black;
 }
 
 #userListHeader {
-    padding: 5%;
-    border-bottom: 1px solid cornflowerblue;
-    text-align: center;
+    background-color: cornflowerblue;
+    color: white;
+    position: relative;
+    position: fixed;
+    width: 100%;
+    padding: 2vh;
 }
 
-#usersOnlineList{
+#usersOnlineList {
     list-style-type: none;
+    padding-left: 0pt;
+    padding-top: 7.7vh; 
 }
 
-.user-list-item{
+
+.user-list-item {
     font-size: 15px;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    cursor: pointer;
+}
+
+.user-list-item :hover{
+    /*background-color: white;
+    border: 2px solid cornflowerblue;*/
+}
+
+.user-wrapper:hover {
+    background-color: rgba(237, 236, 236, 0.8);
 }
 
 .userListProfilePicture {
@@ -49,8 +68,23 @@
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
     float: right;
-    margin-top: 10%;
-    margin-right: 15%
+    margin-top: 8%;
+    margin-right: 10%
 }
 
+@media screen and (min-width: 769px) {
+    #userListContainer {
+        height: 94vh;
+    }
 
+}
+
+@media screen and (max-width: 769px) {
+    #userListHeader {
+        position: absolute;
+    }
+    #usersOnlineList {
+        margin-top: 8.9px;
+    }
+
+}
