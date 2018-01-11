@@ -33,7 +33,7 @@ namespace AlfaChatten.Data
 
         async public Task CreateUser(ApplicationUser user)
         {
-            user.UserName = user.UserName.ConvertToEnglishAlphabet();
+            user.UserName = user.UserName.ConvertToEnglishAlphabetAndRemoveWhiteSpaces();
 
             if (await userManager.FindByNameAsync(user.UserName) == null)
             {
@@ -66,6 +66,8 @@ namespace AlfaChatten.Data
 
         async public Task SignIn(string userName)
         {
+            userName = userName.ConvertToEnglishAlphabetAndRemoveWhiteSpaces();
+
             var user = await userManager.FindByNameAsync(userName);
             if (user != null)
             {

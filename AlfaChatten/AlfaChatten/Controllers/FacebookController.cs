@@ -1,4 +1,5 @@
 ﻿using AlfaChatten.Data;
+using AlfaChatten.ExtensionMethods;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,6 @@ namespace AlfaChatten.Controllers
             ApplicationUser newUser = new ApplicationUser();
 
             var info = await _signInManager.GetExternalLoginInfoAsync();
-
             string facebookId = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
             string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
             string lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
@@ -44,50 +44,23 @@ namespace AlfaChatten.Controllers
             string email = info.Principal.FindFirstValue(ClaimTypes.Email);
             string image = $"https://graph.facebook.com/{facebookId}/picture?type=large";
 
-            userName = userName.Replace("ö", string.Empty);
+            userName = userName.ConvertToEnglishAlphabetAndRemoveWhiteSpaces();
 
-            try
+            if (await _userManager.FindByNameAsync(userName) == null)
             {
-                if (await _userManager.FindByNameAsync(userName) == null)
+                newUser = new ApplicationUser
                 {
-                    newUser = new ApplicationUser
-                    {
-                        //FacebookId = facebookId,
-                        Email = email,
-                        Image = image,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
-                        //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
-                        UserName = firstName + lastName,
-                    };
-
-                    await Datamanager.CreateUser(newUser);
-                }
-
-                else if (_userManager.FindByNameAsync(userName) != null)
-                {
-                    newUser = new ApplicationUser
-                    {
-                        //FacebookId = facebookId,
-                        Email = email,
-                        Image = image,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
-                        //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
-                        UserName = firstName + lastName,
-                    };
-
-
-                    await Datamanager.SignIn(newUser.UserName);
-                }
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    UserName = firstName + lastName,
+                };
+                await Datamanager.CreateUser(newUser);
             }
-            catch (System.Exception)
-            {
-                return Content(@"<body onload='window.close();'></body>", "text/html");
 
-               // await Datamanager.SignIn(newUser.UserName);
+            else if (_userManager.FindByNameAsync(userName) != null)
+            {
+                await Datamanager.SignIn(userName);
             }
 
             return Content(@"<body onload='window.close();'></body>", "text/html");
