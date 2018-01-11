@@ -44,23 +44,30 @@ namespace AlfaChatten.Controllers
             string email = info.Principal.FindFirstValue(ClaimTypes.Email);
             string image = $"https://graph.facebook.com/{facebookId}/picture?type=large";
 
-            if (await _userManager.FindByNameAsync(userName) == null)
+            try
             {
-                newUser = new ApplicationUser
+                if (await _userManager.FindByNameAsync(userName) == null)
                 {
-                    //FacebookId = facebookId,
-                    Email = email,
-                    Image = image,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
-                    //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
-                    UserName = "daniel",
-                };
+                    newUser = new ApplicationUser
+                    {
+                        //FacebookId = facebookId,
+                        Email = email,
+                        Image = image,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
+                        //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
+                        UserName = firstName+lastName,
+                    };
 
-                await Datamanager.CreateUser(newUser);
+                    await Datamanager.CreateUser(newUser);
+                }
+                else
+                {
+                    await Datamanager.SignIn(newUser.UserName);
+                }
             }
-            else
+            catch (System.Exception)
             {
                 await Datamanager.SignIn(newUser.UserName);
             }
