@@ -21,6 +21,7 @@
 
 #userListHeader {
     background-color: cornflowerblue;
+    border: solid 1px cornflowerblue;
     color: white;
     position: relative;
     position: fixed;
