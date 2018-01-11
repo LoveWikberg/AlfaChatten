@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AlfaChatten.ExtensionMethods;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -32,6 +33,8 @@ namespace AlfaChatten.Data
 
         async public Task CreateUser(ApplicationUser user)
         {
+            user.UserName = user.UserName.ConvertToEnglishAlphabet();
+
             if (await userManager.FindByNameAsync(user.UserName) == null)
             {
                 var newUser = new ApplicationUser

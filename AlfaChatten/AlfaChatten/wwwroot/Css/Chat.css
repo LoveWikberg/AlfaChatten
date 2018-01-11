@@ -4,6 +4,8 @@
 
 .chatContent::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
 
 .chatContent::-webkit-scrollbar-thumb {
@@ -13,7 +15,6 @@
 }
 
 .chatContainer {
-    border: solid black 1px;
     height: 100vh;
 }
 
@@ -55,12 +56,12 @@
     color: white;
 }
 
-#addon :hover{
+#addon :hover {
     text-decoration: none;
     background-color: white;
     color: cornflowerblue;
     border: solid 1px cornflowerblue;
-    border-radius:2px;
+    border-radius: 2px;
     cursor: pointer;
 }
 
@@ -97,7 +98,7 @@
     min-width: 30px;
     padding: 4px 3px 0 3px;
     text-align: center;
-    z-index:3;
+    z-index: 3;
 }
 
 
