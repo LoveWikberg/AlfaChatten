@@ -11,8 +11,8 @@ using System;
 namespace AlfaChatten.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180108081457_LoggedInUsers")]
-    partial class LoggedInUsers
+    [Migration("20180111124934_master")]
+    partial class master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
