@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../Css/Chat.css" rel="stylesheet" />
+    <link href="Css/SideNav.css" rel="stylesheet" />
+    <link href="../Css/userPanel.css" rel="stylesheet" />
+    <link href="../font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="../JavaScript/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <title></title>
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-toggleable-md navbar-light bg-faded" id="navbar">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">Alfachatten</a>
+            <span id="hideNavbar" class="navbar-text fa fa-arrow-up"></span>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div id="logedinInOrOut" class="form-inline my-2 my-lg-0 faded form-group">
+                    <fieldset>
+                        <input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">
+                        <button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>
+                        &nbsp;
+                        <button class="btn btn-outline-primary my-2 my-sm-0" id="createAccount">Create account</button>
+
+                    </fieldset>
+
+                    <button class="btn btn-outline-primary my-2 my-sm-0"onclick='window.open("/facebook/ExternalLogin", "_blank", "toolbar=no,scrollbars=no,resizable=no,top=300,left=500,width=1200,height=400");'>Login with Facebook</button>
+
+                 
+                    <!--<form action="/facebook/ExternalLogin" method="get" class="form-horizontal">
+                        <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Login with Facebook</button>
+                    </form>-->                       
+                </div>
+            </div>
+        </nav>
+
+        <!--This is for side off-canvas navbar-->
+        <!--<div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div id="logedinInOrOut" class="faded form-group">
+                <fieldset>
+                    <input class="form-control " type="text" placeholder="User name" id="userName">
+                    <button class="btn btn-success " id="signIn">Sign in</button>
+                    &nbsp;
+                    <button class="btn btn-primary " id="createAccount">Create account</button>
+                </fieldset>
+            </div>
+        </div>-->
+
+        <div class="row justify-content-md-center">
+            <div class="col-md-6 chatContainer">
+                <div class="chatContent">
+
+                </div>
+                <hr />
+                <form id="chatForm" class="chatInput">
+                    <fieldset id="chatFieldSet" disabled>
+                        <div class="input-group">
+                            <textarea type="text" class="form-control" id="messageInput" placeholder="Sign in to chat" rows="6"></textarea>
+                            <span class="input-group-btn" id="addon">
+                                <button class="btn btn-secondary" type="submit" id="chatFormSubmitBtn">
+                                    <i class="fa fa-arrow-circle-o-right fa-3x" style="border:none"></i>
+                                </button>
+                            </span>
+                            <!--<input type="submit" value="send" />-->
+                        </div>
+                    </fieldset>
+                </form>
+                <!--<input type="text" id="message" />
+                <input type="button" id="sendMessage" value="Send" />
+                <ul id="discussion"></ul>-->
+            </div>
+            <div class="col-md-6 userPanelContainer">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a id="profileTab" class="nav-link" data-toggle="tab" href="#profile" role="tab">Create account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#users" role="tab">Search users</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane" id="profile" role="tabpanel">
+                        <form id="createUserForm">
+                            <div class="form-group">
+                                <label for="createUserName">User name</label>
+                                <input id="createUserName" name="userName" class="form-control" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <label for="createFirstName">First name</label>
+                                <input id="createFirstName" name="firstName" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="createLastName">Last name</label>
+                                <input id="createLastName" name="lastName" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="createEmail">Email</label>
+                                <input id="createEmail" name="email" class="form-control" type="email" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                        <div id="editProfileContent" hidden>
+                            <form id="editProfileImageForm" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="createFile">File input</label>
+                                    <input type="file" class="form-control-file" id="profileImage">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label for="formUserName">User name</label>
+                                    <input id="formUserName" name="userName" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="formEmail">Email</label>
+                                    <input id="formEmail" name="email" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="formChatName">Chat name</label>
+                                    <input id="formChatName" name="chatName" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="formQuote">Quote</label>
+                                    <input id="formQuote" name="Quote" class="form-control" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="users" role="tabpanel">
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon fa fa-search"></span>
+                            <input type="text" class="form-control" placeholder="Search user" id="userSearch">
+                        </div>
+                        <div id="profileCard" class="card" hidden>
+                            <img class="card-img-top" alt="Card image cap">
+                            <div class="card-block">
+                                <h4 id="cardUserName" class="card-title"></h4>
+                                <p class="card-text"><i id="cardQuote"></i></p>
+                                <button class="btn btn-outline-primary">Send message</button>
+                            </div>
+                        </div>
+                        <ul class="list-group" id="userSearchResult"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="showNav" class="rounded-circle">
+        <i class="fa fa-bars"></i>
+    </div>
+    <div id="toogleChatOrUserPanel" class="rounded-circle">
+        <i class="fa fa-address-card" aria-hidden="true"></i>
+    </div>
+    <script src="JavaScript/navbar.js"></script>
+    <script src="../JavaScript/userpanel.js"></script>
+    <script src="../JavaScript/signalR.js"></script>
+    <script src="../JavaScript/chat.js"></script>
+</body>
+</html>

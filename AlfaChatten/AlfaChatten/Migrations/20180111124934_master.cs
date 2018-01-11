@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AlfaChatten.Migrations
 {
-    public partial class firstDaniel : Migration
+    public partial class master : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
