@@ -35,8 +35,8 @@ namespace AlfaChatten.Controllers
         {
             ApplicationUser newUser = new ApplicationUser();
 
-
             var info = await _signInManager.GetExternalLoginInfoAsync();
+
             string facebookId = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
             string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
             string lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
@@ -44,28 +44,26 @@ namespace AlfaChatten.Controllers
             string email = info.Principal.FindFirstValue(ClaimTypes.Email);
             string image = $"https://graph.facebook.com/{facebookId}/picture?type=large";
 
-            newUser = new ApplicationUser
+            if (await _userManager.FindByNameAsync(userName) == null)
             {
-                //FacebookId = facebookId,
-                Email = email,
-                Image = image,
-                FirstName = firstName,
-                LastName = lastName,
-                //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
-                //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
-                UserName = userName,
-            };
+                newUser = new ApplicationUser
+                {
+                    //FacebookId = facebookId,
+                    Email = email,
+                    Image = image,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
+                    //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
+                    UserName = "daniel",
+                };
 
-            try
-            {
                 await Datamanager.CreateUser(newUser);
             }
-            catch
+            else
             {
                 await Datamanager.SignIn(newUser.UserName);
             }
-
-
 
             return Content(@"<body onload='window.close();'></body>", "text/html");
         }
