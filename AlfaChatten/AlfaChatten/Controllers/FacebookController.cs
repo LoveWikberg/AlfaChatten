@@ -44,6 +44,8 @@ namespace AlfaChatten.Controllers
             string email = info.Principal.FindFirstValue(ClaimTypes.Email);
             string image = $"https://graph.facebook.com/{facebookId}/picture?type=large";
 
+            userName = userName.Replace("ö", string.Empty);
+
             try
             {
                 if (await _userManager.FindByNameAsync(userName) == null)
@@ -57,25 +59,39 @@ namespace AlfaChatten.Controllers
                         LastName = lastName,
                         //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
                         //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
-                        UserName = firstName+lastName,
+                        UserName = firstName + lastName,
                     };
 
                     await Datamanager.CreateUser(newUser);
                 }
-                else
+
+                else if (_userManager.FindByNameAsync(userName) != null)
                 {
+                    newUser = new ApplicationUser
+                    {
+                        //FacebookId = facebookId,
+                        Email = email,
+                        Image = image,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        //DateOfBirth = info.Principal.FindFirstValue(ClaimTypes.DateOfBirth),
+                        //Gender = info.Principal.FindFirstValue(ClaimTypes.Gender),
+                        UserName = firstName + lastName,
+                    };
+
+
                     await Datamanager.SignIn(newUser.UserName);
                 }
             }
             catch (System.Exception)
             {
-                await Datamanager.SignIn(newUser.UserName);
+                return Content(@"<body onload='window.close();'></body>", "text/html");
+
+               // await Datamanager.SignIn(newUser.UserName);
             }
 
             return Content(@"<body onload='window.close();'></body>", "text/html");
         }
-
-
 
         [Route("/Error")]
         public IActionResult Index()
