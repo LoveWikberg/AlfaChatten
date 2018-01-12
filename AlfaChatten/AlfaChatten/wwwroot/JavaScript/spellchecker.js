@@ -1,7 +1,8 @@
 ﻿$(function () {
 
     var touchtime = 0;
-    $("#messageInput").on("click", function () {
+    $("#messageInput").on("click", function (e) {
+        e.preventDefault();
         if (touchtime === 0) {
             touchtime = new Date().getTime();
         } else {

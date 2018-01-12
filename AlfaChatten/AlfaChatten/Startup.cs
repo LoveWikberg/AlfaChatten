@@ -37,8 +37,8 @@ namespace AlfaChatten
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.AppId = "204781766763827";
+                facebookOptions.AppSecret = "e65b20a53c7c16dada2b33c0f3db7ea8";
 
                 // Copy to Secret manager
 

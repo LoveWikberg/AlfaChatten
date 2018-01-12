@@ -9,26 +9,19 @@
         signIn({ userName: name });
     });
 
-    $(document).on("click", "#signOut", function () {
+    $(document).on("click", "#signOut,#signOutSideNav", function () {
         signOut();
     });
 
-    $(document).on("click", "#signOutSideNav", function () {
-        signOut();
-    });
+    //$(document).on("click", "#signOutSideNav", function () {
+    //    signOut();
+    //});
 
     $('#userName').keyup(function () {
         $('#logedinInOrOut').removeClass('has-danger');
         $('#userName').removeClass('form-control-danger');
     });
 
-    //$window.resize(function () {
-    //    fixNavbar();
-    //});
-
-    $('#hideNavbar').click(function () {
-        //$('#navbar').fadeOut();
-    });
 
     $('#showNav').click(function () {
         openNav();
@@ -36,18 +29,6 @@
     });
 
 });
-
-var $window = $(window);
-
-//function fixNavbar() {
-//    if ($window.width() <= 767 && !$('#navbar').hasClass('fixed-top')) {
-//        $('#navbar').addClass('fixed-top');
-//    }
-//    else if ($window.width() > 767 && $('#navbar').hasClass('fixed-top')) {
-//        $('#navbar').removeClass('fixed-top');
-//        $('#navbar').show();
-//    }
-//}
 
 
 function signIn(data) {
