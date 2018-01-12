@@ -32,20 +32,6 @@ namespace AlfaChatten.Controllers
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        [HttpPost, Route("signIn")]
-        async public Task<IActionResult> SignIn(string userName)
-        {
-            try
-            {
-                await dataManager.SignIn(userName);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [Authorize, HttpDelete]
         async public Task<IActionResult> RemoveUser()
         {
@@ -74,6 +60,22 @@ namespace AlfaChatten.Controllers
             }
         }
 
+        [Authorize, HttpPost, Route("signOut")]
+        async public Task<IActionResult> SignOut()
+        {
+            await dataManager.SignOut(HttpContext.User.Identity.Name);
+            return Ok("Signed out..");
+        }
+
+        [HttpGet, Route("checkAuth")]
+        public IActionResult CheckIfUserIsAuthorized()
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+                return Ok(HttpContext.User.Identity.Name);
+            else
+                return Unauthorized();
+        }
+
         [Authorize, HttpPut, Route("image")]
         async public Task<IActionResult> EditProfileImage(IFormFile image)
         {
@@ -87,36 +89,6 @@ namespace AlfaChatten.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
-
-        [HttpPost, Route("create")]
-        async public Task<IActionResult> CreateUser(ApplicationUser user)
-        {
-            try
-            {
-                await dataManager.CreateUser(user);
-                return Ok(user);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [Authorize, HttpPost, Route("signOut")]
-        async public Task<IActionResult> SignOut()
-        {
-            await dataManager.SignOut(HttpContext.User.Identity.Name);
-            return Ok("Signed out..");
-        }
-
-        [HttpGet, Route("checkAuth")]
-        public IActionResult TestAuth()
-        {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                return Ok(HttpContext.User.Identity.Name);
-            else
-                return Unauthorized();
         }
 
         [Authorize, HttpGet, Route("loggedInUsersInfo")]
@@ -133,7 +105,6 @@ namespace AlfaChatten.Controllers
             return Ok(user);
         }
 
-
         [HttpGet, Route("searchUser")]
         public IActionResult SearchUser(string searchInput)
         {
@@ -147,6 +118,35 @@ namespace AlfaChatten.Controllers
             var allUsersFromDb = dataManager.GetAllUsers();
             return Ok(allUsersFromDb);
         }
+
+        #region Content needed if facebook authorization doesn't work
+        //[HttpPost, Route("create")]
+        //async public Task<IActionResult> CreateUser(ApplicationUser user)
+        //{
+        //    try
+        //    {
+        //        await dataManager.CreateUser(user);
+        //        return Ok(user);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
+        //[HttpPost, Route("signIn")]
+        //async public Task<IActionResult> SignIn(string userName)
+        //{
+        //    try
+        //    {
+        //        await dataManager.SignIn(userName);
+        //        return Ok();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
+        #endregion
 
     }
 }

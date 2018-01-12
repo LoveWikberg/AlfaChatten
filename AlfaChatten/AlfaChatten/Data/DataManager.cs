@@ -1,4 +1,5 @@
 ﻿using AlfaChatten.ExtensionMethods;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AlfaChatten.Data
@@ -28,35 +32,20 @@ namespace AlfaChatten.Data
             this.context = context;
             this.hostingEnvironment = hostingEnvironment;
             context.Database.EnsureCreated();
-            //roleManager.CreateAsync(new IdentityRole { Name = "Administrator" }).Wait();
         }
 
         async public Task CreateUser(ApplicationUser user)
         {
-            user.UserName = user.UserName.ConvertToEnglishAlphabetAndRemoveWhiteSpaces();
-
-            if (await userManager.FindByNameAsync(user.UserName) == null)
-            {
-                var newUser = new ApplicationUser
-                {
-                    UserName = user.UserName.Replace("admin", ""),
-                    FirstName = user.FirstName,
-                    LastName = user.LastName.Replace("admin", ""),
-                    Email = user.Email,
-                    ChatName = user.UserName,
-                    IsSignedIn = true
-                };
-                await userManager.CreateAsync(newUser);
-                if (user.UserName.EndsWith("admin"))
-                {
-                    await userManager.AddToRoleAsync(newUser, "Administrator");
-                }
-                await signInManager.SignInAsync(newUser, false);
-            }
-            else
-                throw new Exception("User name is taken");
+            await userManager.CreateAsync(user);
+            await SignIn(user.UserName);
+            await user.TryMakeAdministrator(userManager, roleManager);
         }
 
+        [Authorize(Policy = "RemoveAdmin")]
+        public async Task RemoveAdministrator(ApplicationUser user)
+        {
+            await userManager.DeleteAsync(user);
+        }
         async public Task RemoveUser(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
@@ -66,17 +55,17 @@ namespace AlfaChatten.Data
 
         async public Task SignIn(string userName)
         {
-            userName = userName.ConvertToEnglishAlphabetAndRemoveWhiteSpaces();
+            //userName = userName.ReplaceSwedishCharactersAndRemoveWhiteSpaces();
 
             var user = await userManager.FindByNameAsync(userName);
-            if (user != null)
-            {
-                await signInManager.SignInAsync(user, false);
-                user.IsSignedIn = true;
-                await userManager.UpdateAsync(user);
-            }
-            else
-                throw new Exception("Invalid user name");
+            //if (user != null)
+            //{
+            await signInManager.SignInAsync(user, false);
+            user.IsSignedIn = true;
+            await userManager.UpdateAsync(user);
+            //}
+            //else
+            //    throw new Exception("Invalid user name");
         }
 
         async public Task SignOut(string userName)
@@ -133,7 +122,6 @@ namespace AlfaChatten.Data
             try
             {
                 string path = $"{hostingEnvironment.WebRootPath}\\{rootChildFolder}";
-                //string path = Directory.GetCurrentDirectory() + @"\wwwroot\" + rootChildFolder + @"\";
                 string[] dir = Directory.GetFiles(path, id + "*");
                 //If the the dir-array contains more than one element, find the file that match the id-variable.
                 for (int i = 0; i < dir.Length; i++)
@@ -148,7 +136,7 @@ namespace AlfaChatten.Data
                 }
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -191,6 +179,41 @@ namespace AlfaChatten.Data
             }
 
             return allUsers;
+        }
+
+        ApplicationUser SetUserinfo(ExternalLoginInfo info)
+        {
+            string facebookId = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+            string lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+            string userName = firstName + lastName;
+            userName = userName.ReplaceSwedishCharactersAndRemoveWhiteSpaces();
+            string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            string image = $"https://graph.facebook.com/{facebookId}/picture?type=large";
+
+            ApplicationUser userInfo = new ApplicationUser
+            {
+                UserName = userName,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Image = image
+            };
+            return userInfo;
+        }
+
+        async public Task FacebookAuthorization(ExternalLoginInfo info)
+        {
+            var user = SetUserinfo(info);
+
+            if (await userManager.FindByNameAsync(user.UserName) == null)
+            {
+                await CreateUser(user);
+            }
+            else
+            {
+                await SignIn(user.UserName);
+            }
         }
     }
 }

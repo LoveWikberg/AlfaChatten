@@ -21,5 +21,12 @@ namespace AlfaChatten.Data
             base.OnModelCreating(builder);
         }
 
+        public void DeleteMessage(string id)
+        {
+            var chatMsgToRemove = Chat.SingleOrDefault(c => c.Id.ToString() == id);
+            Chat.Remove(chatMsgToRemove);
+            SaveChanges();
+        }
+
     }
 }

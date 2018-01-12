@@ -26,12 +26,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto"></ul>
                     <div id="logedinInOrOut" class="form-inline my-2 my-lg-0 faded form-group">
-                        <fieldset>
+                        <!--<fieldset>
                             <input class="form-control mr-sm-2" type="text" placeholder="User name" id="userName">
                             <button class="btn btn-outline-success my-2 my-sm-0" id="signIn">Sign in</button>
-                        </fieldset>
-                        <button class="btn btn-outline-primary my-2 my-sm-0" onclick='window.open("/facebook/ExternalLogin", "_blank", "toolbar=no,scrollbars=no,resizable=no,top=300,left=500,width=1200,height=400");'>Login with Facebook</button>
-
+                        </fieldset>-->
+                        <button id="facebookSignin" class="btn btn-outline-primary my-2 my-sm-0" >Login with Facebook</button>
                     </div>
                 </div>
             </nav>
@@ -42,8 +41,9 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <div id="logedinInOrOutSideNav" class="form-group">
                 <fieldset>
-                    <input class="form-control " type="text" placeholder="User name" id="userNameSideNav">
-                    <button class="btn btn-success " id="signInSideNav">Sign in</button>
+                    <!--<input class="form-control " type="text" placeholder="User name" id="userNameSideNav">
+                    <button class="btn btn-success " id="signInSideNav">Sign in</button>-->
+                    <button id="facebookSigninSideNav" class="btn btn-outline-primary my-2 my-sm-0">Login with Facebook</button>
                 </fieldset>
             </div>
         </div>
@@ -82,9 +82,11 @@
                 </ul>
 
                 <!-- Tab panes -->
-                <div class="tab-content">
+                <div id="tab-content-profile" class="tab-content">
                     <div class="tab-pane" id="profile" role="tabpanel">
-                        <form id="createUserForm">
+                        <button id="facebookSigninProfileTab" class="btn btn-outline-primary">Create through facebook</button>
+
+                        <!--<form id="createUserForm">
                             <div class="form-group">
                                 <label for="createUserName">User name</label>
                                 <input id="createUserName" name="userName" class="form-control" readonly />
@@ -102,7 +104,7 @@
                                 <input id="createEmail" name="email" class="form-control" type="email" required />
                             </div>
                             <button id="editFormSubmitBtn" type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                        </form>-->
 
                         <div id="editProfileContent" hidden>
                             <form id="editProfileImageForm" enctype="multipart/form-data">
@@ -121,7 +123,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-md-4">
-                                                <button type="submit" class="btn userPanelBtn">Save image</button>
+                                                <button type="submit" id="saveImageBtn" class="btn btn-outline-primary">Save image</button>
                                             </div>
                                         </div>
                                     </div>
@@ -183,9 +185,9 @@
     <div id="showNav" class="rounded-circle">
         <i class="fa fa-bars"></i>
     </div>
-    <div id="toogleChatOrUserPanel" class="rounded-circle">
+    <!--<div id="toogleChatOrUserPanel" class="rounded-circle">
         <i class="fa fa-address-card" aria-hidden="true"></i>
-    </div>
+    </div>-->
     <script src="JavaScript/navbar.js"></script>
     <script src="../JavaScript/userpanel.js"></script>
     <script src="../JavaScript/signalR.js"></script>

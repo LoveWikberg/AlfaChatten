@@ -1,28 +1,38 @@
 ﻿$(function () {
+    $('#chatForm').submit(function (event) {
+        event.preventDefault();
+        var message = $('#messageInput').val();
+        //printOwnMessage(message);
+        connection.invoke('send', message);
+        $('#messageInput').val("");
+    });
+
+    $("#messageInput").keyup(function (e) {
+        var key = e.which;
+        if (key === 13) {
+            $("#chatFormSubmitBtn").click();
+        }
+    });
+
+    var touchtime = 0;
+    $(document).on("click", ".chatBubble", function (e) {
+        e.preventDefault();
+        if (touchtime === 0) {
+            touchtime = new Date().getTime();
+        } else {
+            if (((new Date().getTime()) - touchtime) < 800) {
+                var id = $(this).attr("id");
+                removeMessage(id);
+            } else {
+                touchtime = new Date().getTime();
+            }
+        }
+    });
 
 });
 
 var transport = signalR.TransportType.WebSockets;
 var connection = new signalR.HubConnection(`http://${document.location.host}/chat`, { transport: transport });
-
-//var button = document.getElementById("sendMessage");
-
-$('#chatForm').submit(function (event) {
-    event.preventDefault();
-    var message = $('#messageInput').val();
-    //printOwnMessage(message);
-    connection.invoke('send', message);
-    $('#messageInput').val("");
-});
-
-$("#messageInput").keyup(function (e) {
-    var key = e.which;
-    if (key == 13) {
-        $("#chatFormSubmitBtn").click();
-    }
-});
-
-
 
 // Följ denna länk för att lägga till en funktion som
 // spelar upp ett ljud när ett meddelande tas emot:
@@ -41,18 +51,29 @@ connection.on('broadcastMessageToSelf', (message) => {
     temporaryPrintOwnMessage(message);
 });
 
-
-//button.addEventListener("click", event => {
-//    connection.invoke('send', name, messageInput.value);
-//    messageInput.value = '';
-//    messageInput.focus();
-//});
+connection.on();
 
 connection.start();
 
+function removeMessage(id) {
+    $.ajax({
+        url: "api/messages",
+        method: "DELETE",
+        data: { id: id }
+    })
+        .done(function () {
+            $('.chatBubble#' + id + '').fadeOut(300, function () {
+                $(this).remove();
+            });
+        })
+        .fail(function (xhr, status, error) {
+            alert("fail");
+        });
+}
+
 function getAllMessages(userName) {
     $.ajax({
-        url: "api/messages/getallmessages",
+        url: "api/messages/allmessages",
         method: "GET"
     })
         .done(function (result) {
@@ -76,18 +97,18 @@ function checkMessageOrigin(chat, userName) {
         printMessage(chat, true);
     }
     else {
-        printMessage(chat, false)
+        printMessage(chat, false);
     }
 
 }
 
 function printMessage(chat, isOwnMessage) {
-    var html = ""
+    var html = "";
     if (isOwnMessage) {
-        html += '<div><p class="chatBubble blue">' + chat.message + '<b> - you</b></p>';
+        html += '<div ><p id="' + chat.id + '" class="chatBubble blue">' + chat.message + '<b> - you</b></p>';
     }
     else {
-        html += '<div><p class="chatBubble gray">' + chat.message + '<b> - ' + chat.user + '</b></p>';
+        html += '<div ><p id="' + chat.id + '" class="chatBubble gray">' + chat.message + '<b> - ' + chat.user + '</b></p>';
     }
     html += '</div>';
     $('.chatContent').append(html);
