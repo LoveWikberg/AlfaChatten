@@ -4,7 +4,7 @@
 
 function getAllUsers() {
     $.ajax({
-        url: "api/user/getAllUsers",
+        url: "api/user/allUsers",
         method: "GET"
     })
         .done(function (allUsers) {

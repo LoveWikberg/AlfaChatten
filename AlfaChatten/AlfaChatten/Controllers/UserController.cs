@@ -112,10 +112,10 @@ namespace AlfaChatten.Controllers
             return Ok(users);
         }
 
-        [HttpGet, Route("getAllUsers")]
+        [HttpGet, Route("allUsers")]
         public IActionResult GetAllUsers()
         {
-            var allUsersFromDb = dataManager.GetAllUsers();
+            var allUsersFromDb = dataManager.GetAllUsersWithImages();
             return Ok(allUsersFromDb);
         }
 

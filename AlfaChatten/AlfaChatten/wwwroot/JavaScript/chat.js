@@ -67,7 +67,7 @@ function removeMessage(id) {
             });
         })
         .fail(function (xhr, status, error) {
-            alert("fail");
+            alert("Only admins are allowed to remove messages");
         });
 }
 

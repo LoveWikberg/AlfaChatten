@@ -55,17 +55,10 @@ namespace AlfaChatten.Data
 
         async public Task SignIn(string userName)
         {
-            //userName = userName.ReplaceSwedishCharactersAndRemoveWhiteSpaces();
-
             var user = await userManager.FindByNameAsync(userName);
-            //if (user != null)
-            //{
             await signInManager.SignInAsync(user, false);
             user.IsSignedIn = true;
             await userManager.UpdateAsync(user);
-            //}
-            //else
-            //    throw new Exception("Invalid user name");
         }
 
         async public Task SignOut(string userName)
@@ -169,7 +162,7 @@ namespace AlfaChatten.Data
             }
         }
 
-        public ApplicationUser[] GetAllUsers()
+        public ApplicationUser[] GetAllUsersWithImages()
         {
             var allUsers = userManager.Users.ToArray();
 
@@ -181,7 +174,7 @@ namespace AlfaChatten.Data
             return allUsers;
         }
 
-        ApplicationUser SetUserinfo(ExternalLoginInfo info)
+        ApplicationUser SetUserInfo(ExternalLoginInfo info)
         {
             string facebookId = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
             string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
@@ -204,8 +197,12 @@ namespace AlfaChatten.Data
 
         async public Task FacebookAuthorization(ExternalLoginInfo info)
         {
-            var user = SetUserinfo(info);
+            var user = SetUserInfo(info);
 
+            // TODO
+            // If a new user create an account with the same name as an existing user
+            // he/she will log in with the existing account. Fix an error handler for this.
+            // I.E check email instead of username since emails are unique.
             if (await userManager.FindByNameAsync(user.UserName) == null)
             {
                 await CreateUser(user);

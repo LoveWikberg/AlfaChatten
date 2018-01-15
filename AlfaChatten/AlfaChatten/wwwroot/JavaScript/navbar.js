@@ -29,7 +29,7 @@ function checkIfFacebookPopupIsClosed() {
     var facebookWindowTimer = window.setInterval(function () {
         if (facebookPopUp.closed !== false) {
             window.clearInterval(facebookWindowTimer);
-            checkIfClientIsAuthorized();
+            location.reload();
         }
     }, 200);
 }

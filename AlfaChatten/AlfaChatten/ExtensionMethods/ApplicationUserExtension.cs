@@ -13,7 +13,7 @@ namespace AlfaChatten.ExtensionMethods
         public static async Task TryMakeAdministrator(this ApplicationUser user, UserManager<ApplicationUser> userManager
             , RoleManager<IdentityRole> roleManager)
         {
-            string[] allowedAdminUserNames = new string[] { "lovewickberg", "pascalandersson", "danielcarlsson" };
+            string[] allowedAdminUserNames = new string[] { "lovewickberg", "pascalandersson", "danielcarlson" };
             if (allowedAdminUserNames.Any(u => u.ToLower().Equals(user.UserName.ToLower())))
             {
                 if (!await roleManager.RoleExistsAsync("Administrator"))
