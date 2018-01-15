@@ -8,7 +8,7 @@ namespace AlfaChatten.ExtensionMethods
 {
     public static class CustomStringExtension
     {
-        public static string ConvertToEnglishAlphabetAndRemoveWhiteSpaces(this string value)
+        public static string ReplaceSwedishCharactersAndRemoveWhiteSpaces(this string value)
         {
             value = value.Replace('Å', 'A');
             value = value.Replace('å', 'a');

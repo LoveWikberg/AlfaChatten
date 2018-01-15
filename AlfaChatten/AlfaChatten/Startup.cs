@@ -52,6 +52,12 @@ namespace AlfaChatten
                 facebookOptions.Fields.Add("gender");
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RemoveAdmin", policy => policy.RequireClaim("SuperAdmin"));
+            }
+            );
+
             services.AddTransient<DataManager>();
 
             services.AddAuthentication();

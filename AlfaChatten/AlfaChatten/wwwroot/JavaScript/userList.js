@@ -4,7 +4,7 @@
 
 function getAllUsers() {
     $.ajax({
-        url: "api/user/getAllUsers",
+        url: "api/user/allUsers",
         method: "GET"
     })
         .done(function (allUsers) {
@@ -35,9 +35,9 @@ function checkIfUserImageIsUploaded(user) {
     var userImage = "";
 
     if (user.image === null) {
-        userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/Default.png"/>'
+        userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/Default.png"/>';
     } else {
         userImage = '<img class="userListProfilePicture" src="Images/ProfileImages/' + user.image + '"/>';
     }
-    return userImage
+    return userImage;
 }

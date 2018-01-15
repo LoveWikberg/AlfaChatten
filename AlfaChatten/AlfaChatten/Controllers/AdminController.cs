@@ -26,9 +26,19 @@ namespace AlfaChatten.Controllers
         [HttpDelete]
         async public Task<IActionResult> RemoveUser(string userName)
         {
-            var user = await userManager.FindByNameAsync(userName);
-            await userManager.DeleteAsync(user);
-            return Ok();
+            try
+            {
+                var user = await userManager.FindByNameAsync(userName);
+                if (await userManager.IsInRoleAsync(user, "Administrator"))
+                    await dataManager.RemoveAdministrator(user);
+                else
+                    await userManager.DeleteAsync(user);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
     }

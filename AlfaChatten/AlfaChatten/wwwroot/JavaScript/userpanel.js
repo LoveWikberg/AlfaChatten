@@ -8,6 +8,11 @@
         var name = $(this).text();
         getUserInfo({ userName: name });
         $('a[href="#users"]').tab('show');
+        if ($(window).width() < 769) {
+            $('html, body').animate({
+                scrollTop: $("#userPanelContainer").offset().top
+            }, 1000);
+        }
     });
 
     $('#testauth').click(function () {
@@ -63,10 +68,15 @@
 
     $('#editProfileImageForm').on("submit", function (event) {
         event.preventDefault();
+        $('#saveImageBtn').html('<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>');
         var data = new FormData();
         var files = $('#profileImage').get(0).files;
-        data.append('image', files[0]);
-        editProfileImageAjax(data);
+        if (files.length === 0)
+            imageButtonAnimation();
+        else {
+            data.append('image', files[0]);
+            editProfileImageAjax(data);
+        }
     });
 
     $('#createFirstName,#createLastName').keyup(function () {
@@ -92,19 +102,6 @@
         if (deleteUser)
             adminRemoveUser({ userName: user });
     });
-
-    //var lastScrollTop = 0;
-    //$window.scroll(function (event) {
-    //    var st = $(this).scrollTop();
-    //    if (st > lastScrollTop) {
-    //        // downscroll code
-    //        $('#navbar').fadeOut()
-    //    } else {
-    //        $('#navbar').fadeIn()
-    //        // upscroll code
-    //    }
-    //    lastScrollTop = st;
-    //});
 
     $("#profileImage").change(function () {
         readURL(this);
@@ -137,7 +134,8 @@ function editUserInterface(isLogedIn, user) {
         topNavhtml = topNavBarHtml(user);
         sideNavhtml = sideNavBarHtml(user);
         $('#editProfileContent').attr('hidden', false);
-        $('#createUserForm').attr('hidden', true);
+        //$('#createUserForm').attr('hidden', true);
+        $('#facebookSigninProfileTab').attr("hidden", true);
         $('#profileTab').text("Profile");
         $('#messageInput').attr('placeholder', 'Write something...');
         $('#chatFieldSet').removeAttr("disabled");
@@ -210,11 +208,9 @@ function populateProfileForm(user) {
     $('#formQuote').val(user.quote);
 
     if (user.image === null)
-        $('#userImagePreview').attr("src", "Images/ProfileImages/Default.png")
+        $('#userImagePreview').attr("src", "Images/ProfileImages/Default.png");
     else
-        $('#userImagePreview').attr("src", "Images/ProfileImages/" + user.image)
-
-
+        $('#userImagePreview').attr("src", "Images/ProfileImages/" + user.image);
 }
 
 function editUserProfile(formData) {
@@ -272,19 +268,14 @@ function generateProfileCard(user) {
     $('#profileCard').attr('hidden', false);
 }
 
-function createUser(data) {
-    $.ajax({
-        url: "api/user/create",
-        method: "POST",
-        data: data
-    })
-        .done(function (userName) {
-            location.reload();
-        })
-        .fail(function (xhr, status, error) {
-            alert("fail");
-            console.log(xhr, status, error);
-        });
+function imageButtonAnimation(animationClass, symbol) {
+    $('#saveImageBtn').html('<i style="color:white;" class="fa ' + symbol + ' fa-1x "></i>');
+    $('#saveImageBtn').removeClass("btn-outline-primary");
+    $('#saveImageBtn').addClass(animationClass).one('webkitAnimationEnd...', function () {
+        $(this).removeClass(animationClass);
+        $('#saveImageBtn').addClass("btn-outline-primary");
+        $('#saveImageBtn').html('Save image');
+    });
 }
 
 function editProfileImageAjax(data) {
@@ -297,11 +288,13 @@ function editProfileImageAjax(data) {
     })
         .done(function (image) {
             console.log(image);
+            imageButtonAnimation("fileUploadSuccessfull", "fa-check");
         })
         .fail(function (xhr, status, error) {
-            alert("fail");
+            imageButtonAnimation("fileUploadFail", "fa-times");
             console.log(xhr, status, error);
         });
+
 }
 
 function removeUser() {
@@ -330,7 +323,7 @@ function adminRemoveUser(data) {
             location.reload(true);
         })
         .fail(function (xhr, status, error) {
-            alert("Only administrators are alowed to destroy other users.");
+            alert("You are not authorized to destroy this user.");
             console.log(xhr, status, error);
         });
 }
@@ -348,8 +341,38 @@ function readURL(input) {
 
         reader.onload = function (e) {
             $('#userImagePreview').attr('src', e.target.result);
-        }
+        };
 
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// Content needed if facebook authorization doesn't work
+
+//function createUser(data) {
+//    $.ajax({
+//        url: "api/user/create",
+//        method: "POST",
+//        data: data
+//    })
+//        .done(function (userName) {
+//            location.reload();
+//        })
+//        .fail(function (xhr, status, error) {
+//            alert("fail");
+//            console.log(xhr, status, error);
+//        });
+//}
+
+ //var lastScrollTop = 0;
+    //$window.scroll(function (event) {
+    //    var st = $(this).scrollTop();
+    //    if (st > lastScrollTop) {
+    //        // downscroll code
+    //        $('#navbar').fadeOut()
+    //    } else {
+    //        $('#navbar').fadeIn()
+    //        // upscroll code
+    //    }
+    //    lastScrollTop = st;
+    //});
